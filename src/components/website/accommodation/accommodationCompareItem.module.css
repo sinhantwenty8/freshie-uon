@@ -1,0 +1,51 @@
+.container {
+  background-color: #E7EAED;
+  padding: 3vw;
+  margin: 2vw;
+}
+
+.title {
+  color: #345174;
+  font-weight: 500;
+  text-align: center;
+}
+
+.imageContainer {
+  display: flex;
+  justify-content: center;
+}
+
+.viewButton {
+  width: 100%;
+  background-color: #1F304A;
+  height: 5vw;
+  border: none;
+  color: #E3E2E1;
+  margin-top: 5vw;
+  font-size: 1.6vw;
+  padding: 1vw 2vw;
+}
+
+.viewButton:hover {
+  background-color: #E3E2E1;
+  color: #1F304A;
+}
+
+/* Media Query for Small Screens */
+@media (max-width: 600px) {
+  .container {
+    padding: 5vw;
+    margin: 4vw;
+  }
+
+  .title {
+    font-size: 4vw;
+  }
+
+  .viewButton {
+    height: 8vw;
+    font-size: 3vw;
+    margin-top: 8vw;
+    padding: 2vw 4vw;
+  }
+}
