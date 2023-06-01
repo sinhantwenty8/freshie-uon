@@ -30,9 +30,9 @@ export default function AccommodationCompareList() {
 
   const filterAccommodation = useCallback(() =>{
     accommodationAdvantages.forEach((accommodation)=>{
-      if(accommodation.category == "HDB"){
+      if(accommodation.category == category[1]){
         setHdbAdvantages((hdbList)=>[...hdbList,accommodation])
-      }else if(accommodation.category == "Condo"){
+      }else if(accommodation.category == category[0]){
         setCondoAdvantages((condoList)=>[...condoList,accommodation])
       }
     })
@@ -52,8 +52,8 @@ export default function AccommodationCompareList() {
     <div className={classes.container}>
         <h2 className={classes.title}>Advantages</h2>
         <div className={classes.compareItemContainer}>
-          <AccommodationCompareItem accommodation = {hdbAdvantages}></AccommodationCompareItem>
-          <AccommodationCompareItem accommodation = {condoAdvantages} ></AccommodationCompareItem>
+          <AccommodationCompareItem image={`HDB`} accommodation = {hdbAdvantages}></AccommodationCompareItem>
+          <AccommodationCompareItem image={`Condo`} accommodation = {condoAdvantages} ></AccommodationCompareItem>
         </div>
     </div>
   )

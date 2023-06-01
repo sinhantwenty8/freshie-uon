@@ -23,6 +23,7 @@ export default function Accommodation() {
     description: "",
     imageUrl: "",
   });
+  const [isPublished,setIsPublished] = useState(false)
 
   const getAccommodationHeader = useCallback(async () => {
     const querySnapshot = await getDocs(collection(getFirestore(), "accommodation-header"));
@@ -38,9 +39,19 @@ export default function Accommodation() {
     });
   }, [pageId]);
 
+  const getAccommodationPage = useCallback(async () => {
+    const querySnapshot = await getDocs(collection(getFirestore(), "accommodation"));
+    querySnapshot.forEach((doc) => {
+      if (doc.id === pageId) {
+        setIsPublished(doc.data().isPublishedGlobally)
+      }
+    });
+  }, [pageId]);
+
   useEffect(() => {
     const timeOutId = setTimeout(async () => {
       setIsLoading(true);
+      getAccommodationPage()
       getAccommodationHeader().then(() => setIsLoading(false));
     }, 100);
     return () => clearTimeout(timeOutId);
@@ -48,7 +59,7 @@ export default function Accommodation() {
 
   return (
     <div className={classes.all}>
-      {accommodationHeader.title ? (
+      {accommodationHeader.title && isPublished ? (
         <>
           <Header
             title={accommodationHeader.title}

@@ -33,13 +33,13 @@ export default function DetailPage() {
   const [text, settext] = useState("");
   const [slug, setslug] = useState("");
   const [title, settitle] = useState("");
-  const [errorstates, seterrorstates] = useState({
-      sameslug: false, emptytext: false
-  });
   const timestamp = serverTimestamp();
   const [bannerTitle,setBannerTitle] = useState("");
   const [bannerImageUrl,setBannerImageUrl] = useState("");
   const [bannerDescription,setBannerDescription] = useState("")
+  const [errorstates, seterrorstates] = useState({
+      sameslug: false, emptytext: false
+  });
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [modalMessage, setModalMessage] = useState("");
   const [postedBy, setPostedBy] = useState("");
@@ -101,7 +101,6 @@ export default function DetailPage() {
         const docCurRef = doc(getFirestore(), "accommodation-blog", blogTitle);
         const docSnap = await getDoc(docRef);
         const docCurSnap = await getDoc(docCurRef)
-        console.log(slug == blogTitle)
         try {
           if (docCurSnap.exists()) {
             if(slug !=blogTitle ){
@@ -111,7 +110,7 @@ export default function DetailPage() {
               });
               setModalMessage("Page successfully updated.");
             }else{
-              console.log('hi')
+              console.log(text)
               await updateDoc(docRef, { title: title, text: text ,isPublishedGlobally:isPublishedGlobally});
               setModalMessage("Page successfully updated.");
             }
@@ -241,8 +240,6 @@ export default function DetailPage() {
 
     const onTitleChange = (title: string) => {
         settitle(title)
-        setslug(title.replaceAll(" ", "-").toLowerCase())
-        seterrorstates({ ...errorstates, sameslug: false })
     }
 
   return (
@@ -258,7 +255,7 @@ export default function DetailPage() {
                 <h3 className={classes.sectionTitle}>Title</h3> 
                 <TextField InputProps={{ className: classes.input }} sx={{width: '600px'}} size="small" id="title" variant="outlined" onChange={(e) => onTitleChange(e.target.value)} value={title}/>
                 <h3 className={classes.sectionTitle}>Slug</h3>
-                <TextField InputProps={{ className: classes.input }} sx={{width: '600px'}} size="small" id="slug" variant="outlined"value={slug} onChange={(e) => { setslug(e.target.value); seterrorstates({ ...errorstates, sameslug: false }) }} helperText={errorstates.sameslug ? 'Slug already exists' : ''} />
+                <TextField disabled InputProps={{ className: classes.input }} sx={{width: '600px'}} size="small" id="slug" variant="outlined"value={slug} onChange={(e) => { setslug(e.target.value); seterrorstates({ ...errorstates, sameslug: false }) }} helperText={errorstates.sameslug ? 'Slug already exists' : ''} />
                 <h3 className={classes.sectionTitle}>Header</h3>
             </div>
             <HeaderEdit headerTitle={bannerTitle} headerDescription={bannerDescription} headerImageUrl={bannerImageUrl} setBannerTitle={setBannerTitle} setBannerImageUrl={setBannerImageUrl} setBannerDescription={setBannerDescription} setIsImageUploaded ={setIsImageUploaded} />

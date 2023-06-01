@@ -1,83 +1,258 @@
 import { Fragment, useCallback, useEffect, useState } from 'react';
 import classes from "./detailedPageSection.module.css";
-import { collection, getDoc, getDocs, getFirestore } from 'firebase/firestore';
+import { Timestamp, addDoc, collection, deleteDoc, doc, getDoc, getDocs, getFirestore, serverTimestamp, setDoc, updateDoc } from 'firebase/firestore';
+import { deleteObject, getDownloadURL, getStorage, ref, uploadString } from 'firebase/storage';
 import RenderedSection from './renderedSection';
 import Link from "next/link";
+import DeleteIcon from '@mui/icons-material/Delete';
+import { Button, Modal } from '@mui/material';
 
-interface Blog{
-    id:string;
-    title:string;
-    slug:string;
+interface Blog {
+  id: string;
+  title: string;
+  slug: string;
 }
 
-interface PageSection{
-  id:string
-  title:string;
-  imageUrl:string;
-  description:string;
+interface PageSection {
+  id: string;
+  title: string;
+  imageUrl: string;
+  description: string;
+  slug: string; // Add slug property to the PageSection interface
 }
 
 export default function DetailedPageSection() {
-    const [blogs, setBlogs] = useState<Blog[]>([]);
-    const [pageSection,setPageSection] = useState<PageSection[]>([]);
-    const fetchBlogs = useCallback(async () => {
+  const [blogs, setBlogs] = useState<Blog[]>([]);
+  const [pageSections, setPageSections] = useState<PageSection[]>([]);
+  const [showModal, setShowModal] = useState(false);
+  const [newSection, setNewSection] = useState<PageSection>({
+    id: "",
+    title: "",
+    imageUrl: "",
+    description: "",
+    slug: "", // Initialize slug property with an empty string
+  });
+  const [errorstates, seterrorstates] = useState({
+      sameslug: false, emptytext: false
+  });
+  const [isModalOpen, setIsModalOpen] = useState(false);
+  const [modalMessage, setModalMessage] = useState("");
+  const timestamp = serverTimestamp(); 
+  const [createdAt, setCreatedAt] = useState(Timestamp.now);
+
+  const fetchBlogs = useCallback(async () => {
     const querySnapshot = await getDocs(collection(getFirestore(), "accommodation-blog"));
     const fetchedBlogs: Blog[] = [];
     querySnapshot.forEach((doc) => {
       const blogData = doc.data() as Blog;
       fetchedBlogs.push(blogData);
-      console.log(doc.data().slug)
+      console.log(doc.data().slug);
     });
     setBlogs(fetchedBlogs);
   }, []);
 
   useEffect(() => {
-    const timeOutId = setTimeout(async()=>{
+    const timeOutId = setTimeout(async () => {
       fetchBlogs();
-    },100)
-    return ()=> clearTimeout(timeOutId)
+    }, 100);
+    return () => clearTimeout(timeOutId);
   }, [fetchBlogs]);
 
-    const fetchPageSection = useCallback(async () => {
+  const fetchPageSections = useCallback(async () => {
     const querySnapshot = await getDocs(collection(getFirestore(), "accommodation-page"));
-    const fetchedPageSection: PageSection[] = [];
+    const fetchedPageSections: PageSection[] = [];
     querySnapshot.forEach((doc) => {
       const pageData = doc.data() as PageSection;
-      fetchedPageSection.push(pageData);
+      fetchedPageSections.push(pageData);
     });
-    setPageSection((prev)=>fetchedPageSection);
+    setPageSections(fetchedPageSections);
   }, []);
 
-    useEffect(() => {
-      const timeOutId = setTimeout(async()=>{
-        fetchPageSection();
-      },100)
-      return ()=> clearTimeout(timeOutId)
-    }, [fetchPageSection]);
-  
+  useEffect(() => {
+    const timeOutId = setTimeout(async () => {
+      fetchPageSections();
+    }, 100);
+    return () => clearTimeout(timeOutId);
+  }, [fetchPageSections]);
+
+  const handleCreateSection = (newSection: PageSection) => {
+    setPageSections((prevPageSections) => [...prevPageSections, newSection]);
+    setShowModal(false);
+  };
+
+  const handleDeleteSection = async (id: string) => {
+    const docRef = doc(getFirestore(), "accommodation-page", id);
+
+    try {
+      await deleteDoc(docRef);
+
+      // Filter out the deleted section from the pageSections state
+      setPageSections((prevPageSections) =>
+        prevPageSections.filter((section) => section.id !== id)
+      );
+
+      const storage = getStorage();
+      const storageRef = ref(storage, `accommodation/accommodation-page-${id}`);
+
+      try {
+        await getDownloadURL(storageRef); // Check if the file exists
+        await deleteObject(storageRef); // Delete the file from storage
+      } catch (error) {
+        if (isFirebaseStorageError(error) && error.code === "storage/object-not-found") {
+          console.log("Image does not exist. Skipping deletion.");
+        } else {
+          console.error("An error occurred while checking the image existence.", error);
+        }
+      }
+    } catch (error) {
+      console.error("An error occurred while deleting the section.", error);
+    }
+  };
+
+  // Type guard to check if the error is of type FirebaseStorageError
+  function isFirebaseStorageError(error: any): error is FirebaseStorageError {
+    return error && error.code && typeof error.code === "string";
+  }
+
+  // Custom type for Firebase storage errors
+  interface FirebaseStorageError {
+    code: string;
+    message: string;
+    name: string;
+  }
+
+  const handleAddBlog = () => {
+    setShowModal(true);
+  };
+
+  const closeModal = () => {
+    setIsModalOpen(false);
+    setModalMessage("");
+  };
+
+  const handleCreateBlog = async () => {
+  if (newSection.title === '') {
+    seterrorstates({ ...errorstates });
+  } else if (newSection.slug === '') {
+    seterrorstates({ ...errorstates});
+  } else {
+    let slug = newSection.slug;
+    const docRef = doc(getFirestore(), "accommodation-blog", slug);
+    const docSnap = await getDoc(docRef);
+    try {
+      if (docSnap.exists()) {
+        setModalMessage("Slug already exists. Please choose a different one.");
+        setIsModalOpen(true);
+      } else {
+        await setDoc(docRef, { title: newSection.title, slug: newSection.slug, createdAt: timestamp, postedBy: "Admin" ,text:" ",isPublishedGlobally:true,}).then(()=>{fetchBlogs()});
+        setModalMessage("Blog successfully added.");
+        setIsModalOpen(true);
+        setShowModal(false)
+        // Reset the input fields after successful creation
+      }
+    } catch (error) {
+      setModalMessage("An error occurred while creating the blog.");
+      setIsModalOpen(true);
+    }
+  }
+};
+
+const handleDeleteBlog = async (blogId: string) => {
+  const docRef = doc(getFirestore(), "accommodation-blog", blogId);
+
+  try {
+    await deleteDoc(docRef).then(()=>{fetchBlogs()});
+    setModalMessage("Blog successfully deleted.");
+    setIsModalOpen(true);
+  } catch (error) {
+    setModalMessage("An error occurred while deleting the blog.");
+    setIsModalOpen(true);
+  }
+};
+
   return (
     <div>
-        <div className={classes.container}>
-          <div className={classes.innerContainer}>
-            <div className={classes.titleContainer}>
-              <h3 className={classes.title} style={{ marginRight: '150px' }}>No.</h3>
-              <h3 className={classes.title}>Title</h3>
-            </div>
-            <div>
-              {blogs.map((blog, index) => (
-                <Link className={classes.link} key={blog.id} href={`/admin/pages/accommodation/blogTitle?=${blog.slug}`}>
+      <div className={classes.container}>
+        <div className={classes.innerContainer}>
+          <div className={classes.titleContainer}>
+            <h3 className={classes.title} style={{ marginRight: '150px' }}>No.</h3>
+            <h3 className={classes.title}>Title</h3>
+          </div>
+          <div>
+            {blogs.map((blog, index) => (
+              <div key={blog.id} className={classes.blogContainer}>
+                <Link className={classes.link} href={`/admin/pages/accommodation/blogTitle?=${blog.slug}`}>
                   <div className={classes.smallContainer}>
                     <p className={classes.text}>{index + 1}.</p>
                     <p className={classes.blog}>{blog.title}</p>
                   </div>
                 </Link>
-              ))}
-            </div>
+                <DeleteIcon
+                  className={classes.deleteIcon}
+                  onClick={() => handleDeleteBlog(blog.slug)}
+                />
+              </div>
+              
+            ))}
           </div>
+          <button style={{ width: "100%" }} className={classes.button} onClick={handleAddBlog}>
+            Add Blogs
+          </button>
         </div>
-        {pageSection.map((section,index)=>(
-          <RenderedSection key={section.id+index} index={index+1} id={section.id} sectionTitle={section.title} sectionDescription={section.description} sectionImageUrl={section.imageUrl} ></RenderedSection>
-        ))}
+      </div>
+      {pageSections.map((section, index) => (
+        <RenderedSection
+          key={section.id + index}
+          index={index + 1}
+          id={section.id}
+          sectionTitle={section.title}
+          sectionDescription={section.description}
+          sectionImageUrl={section.imageUrl}
+          onDeleteSection={handleDeleteSection} // Pass the deleteSection function as a prop
+          fetchPageSections={fetchPageSections}
+        />
+      ))}
+      <button className={classes.button} onClick={() => handleCreateSection(newSection)}>
+        Add Page Section
+      </button>
+
+      {showModal && (
+        <div className={classes.modal}>
+          <div className={classes.modalContainer}>
+            <h2>Add Blog</h2>
+              {/* Add the modal content to prompt the admin to add the title and slug */}
+              <input
+                type="text"
+                placeholder="Title"
+                value={newSection.title}
+                className={classes.modalInput}
+                onChange={(e) => setNewSection({ ...newSection, title: e.target.value })}
+              />
+              <input
+                type="text"
+                placeholder="Slug"
+                value={newSection.slug}
+                className={classes.modalInput}
+                onChange={(e) => setNewSection({ ...newSection, slug: e.target.value })}
+              />
+              <div className={classes.modalButtons}>
+                <button className={classes.modalButton} onClick={() => handleCreateBlog()}>Add</button>
+                <button className={classes.modalButton} onClick={() => setShowModal(false)}>Cancel</button>  
+             </div>
+          </div>
+          </div>
+      )}
+      {/* Modal */}
+          <Modal open={isModalOpen} onClose={closeModal} className={classes.modal}>
+            <div className={classes.modalContainer}>
+              <h2>{modalMessage}</h2>
+              <Button variant="contained" onClick={closeModal}>
+                Close
+              </Button>
+            </div>
+          </Modal> 
     </div>
   );
 }
+
+

@@ -77,9 +77,9 @@ export default function SideBar({ postPage, postHeader, postHeaderPreview,postPa
     <ThemeProvider theme={theme}>
       <div className={classes.container}>
         <div>
-          <Button className={classes.previewButton} onClick={updatePreview} variant="contained" startIcon={<PreviewIcon />}>
+          {/* <Button className={classes.previewButton} onClick={updatePreview} variant="contained" startIcon={<PreviewIcon />}>
             Preview
-          </Button>
+          </Button> */}
           <Button onClick={updatePage} className={classes.saveButton} variant="contained" startIcon={<SaveIcon />}>
             Save
           </Button>
@@ -89,10 +89,6 @@ export default function SideBar({ postPage, postHeader, postHeaderPreview,postPa
           <TextField InputProps={{ className: classes.input }} value={postedBy} sx={{ width: '200px' }} size="small" id="postedBy" variant="outlined" />
           <h3 className={classes.sectionTitle}>Post Date</h3>
           <TextField InputProps={{ className: classes.input }} value={formattedPostedDate} sx={{ width: '200px' }} size="small" id="postedDate" variant="outlined" />
-          <h3 className={classes.sectionTitle}>Category</h3>
-          <TextField InputProps={{ className: classes.input }} sx={{ width: '200px' }} size="small" id="category" variant="outlined" />
-          <h3 className={classes.sectionTitle}>Tag</h3>
-          <TextField InputProps={{ className: classes.input }} sx={{ width: '200px' }} size="small" id="tag" variant="outlined" />
           <div className={classes.publishContainer}>
             <h3 className={classes.sectionTitle}>Published globally</h3>
             <Switch

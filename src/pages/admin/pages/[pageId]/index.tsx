@@ -18,9 +18,6 @@ import { getStorage, ref, uploadString, getDownloadURL, uploadBytes } from "fire
 import DetailedPageSection from "@/components/admin/accommodation/detailedPageSection";
 import CompareSection from "@/components/admin/accommodation/compareSection";
 
-const SimpleMDE = dynamic(() => import('react-simplemde-editor'), { ssr: false })
-
-
 interface Blog{
   id:string,
   blogTitle:string;
@@ -200,7 +197,6 @@ export default function AccommodationPage() {
         const curDocRef =doc(getFirestore(), `accommodation-header-preview`, blogTitle);
         const curDocSnap = await getDoc(curDocRef);
         if (curDocSnap.exists()) {
-          // Delete the existing document if the slug is not the same
           if (slug != blogTitle) {
             await deleteDoc(curDocRef).then(()=>setModalMessage("Header successfully deleted."));
             await setDoc(docRef, { title: bannerTitle, description: bannerDescription, imageUrl ,slug:slug});
@@ -218,8 +214,6 @@ export default function AccommodationPage() {
 
     const onTitleChange = (title: string) => {
         settitle(title)
-        setslug(title.replaceAll(" ", "-").toLowerCase())
-        seterrorstates({ ...errorstates, sameslug: false })
     }
 
   const returnSection = blogTitle == "accommodation-compare" ? 
@@ -246,12 +240,11 @@ export default function AccommodationPage() {
                 <h3 className={classes.sectionTitle}>Title</h3> 
                 <TextField InputProps={{ className: classes.input }} sx={{width: '600px'}} size="small" id="title" variant="outlined" onChange={(e) => onTitleChange(e.target.value)} value={title}/>
                 <h3 className={classes.sectionTitle}>Slug</h3>
-                <TextField InputProps={{ className: classes.input }} sx={{width: '600px'}} size="small" id="slug" variant="outlined"value={slug} onChange={(e) => { setslug(e.target.value); seterrorstates({ ...errorstates, sameslug: false }) }} helperText={errorstates.sameslug ? 'Slug already exists' : ''} />
+                <TextField disabled InputProps={{ className: classes.input }} sx={{width: '600px'}} size="small" id="slug" variant="outlined"value={slug} onChange={(e) => { setslug(e.target.value); seterrorstates({ ...errorstates, sameslug: false }) }} helperText={errorstates.sameslug ? 'Slug already exists' : ''} />
                 <h3 className={classes.sectionTitle}>Header</h3>
             </div>
             <HeaderEdit headerTitle={bannerTitle} headerDescription={bannerDescription} headerImageUrl={bannerImageUrl} setBannerTitle={setBannerTitle} setBannerImageUrl={setBannerImageUrl} setBannerDescription={setBannerDescription} setIsImageUploaded ={setIsImageUploaded} />
             {returnSection}
-            {/* Modal */}
             <Modal open={isModalOpen} onClose={closeModal} className={classes.modal}>
               <div className={classes.modalContainer}>
                 <h2>{modalMessage}</h2>
@@ -260,9 +253,6 @@ export default function AccommodationPage() {
                 </Button>
               </div>
             </Modal>
-            {/* <Grid item xs={12} xl={6}>
-                <ReactMarkdown className={classes.markdown}>{'# ' + title + '  \n' + text}</ReactMarkdown>
-            </Grid> */}
           </div> 
             <SideBar postPage ={postPage} postPagePreview={postPagePreview} postHeader = {postHeader} postHeaderPreview={postHeaderPreview} isPublished = {isPublishedGlobally} postedBy ={postedBy} postedDate ={createdAt} setIsPublished = {setisPublishedGlobally}></SideBar>
          </div>

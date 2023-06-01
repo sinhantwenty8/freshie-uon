@@ -12,9 +12,10 @@ interface AccommodationAdvantage {
 
 interface Props {
   accommodation: AccommodationAdvantage[];
+  image:string,
 }
 
-const AccommodationCompareItem: React.FC<Props> = ({ accommodation }) => {
+const AccommodationCompareItem: React.FC<Props> = ({ accommodation ,image}) => {
   const [imageUrl,setImageUrl] = useState("")
   
   if(accommodation.length == 0){
@@ -25,7 +26,7 @@ const AccommodationCompareItem: React.FC<Props> = ({ accommodation }) => {
     const querySnapshot = await getDocs(collection(getFirestore(), "accommodation-advantage"));
     querySnapshot.forEach((doc)=>{
       accommodation.forEach((accom)=>{
-        if(accom.category == doc.id){
+        if(image == doc.id){
           setImageUrl(doc.data().compareImageUrl)
         }
       })

@@ -113,7 +113,9 @@
     background-color: #86A7D3;
     color: white;
     margin: 20px;
+    cursor: pointer;
 }
+
 .button:hover{
     color: #547084;
     background-color: white;

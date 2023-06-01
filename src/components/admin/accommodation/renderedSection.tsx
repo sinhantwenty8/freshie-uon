@@ -2,19 +2,22 @@ import { Fragment, useCallback, useEffect, useState } from 'react';
 import { TextField, Input, makeStyles, Button, Modal } from '@mui/material';
 import classes from "./renderedSection.module.css";
 import Link from "next/link";
-import { collection, doc, getDoc, getDocs, getFirestore, setDoc, updateDoc } from 'firebase/firestore';
-import { getDownloadURL, getStorage, ref, uploadString } from 'firebase/storage';
+import { collection, deleteDoc, doc, getDoc, getDocs, getFirestore, setDoc, updateDoc } from 'firebase/firestore';
+import { deleteObject, getDownloadURL, getStorage, ref, uploadString } from 'firebase/storage';
 
 
-interface RenderedSectionProps{
-    index:number;
-    id:string
-    sectionTitle:string;
-    sectionDescription:string;
-    sectionImageUrl:string;
+interface RenderedSectionProps {
+  index: number;
+  id: string;
+  sectionTitle: string;
+  sectionDescription: string;
+  sectionImageUrl: string;
+  onDeleteSection: (id: string) => void; // Add this prop
+  fetchPageSections: () => void; 
 }
 
-export default function RenderedSection({index,id,sectionTitle,sectionDescription,sectionImageUrl,}: RenderedSectionProps) {
+
+export default function RenderedSection({index,id,sectionTitle,sectionDescription,sectionImageUrl,onDeleteSection,fetchPageSections}: RenderedSectionProps) {
     const [title, setTitle] = useState(sectionTitle);
     const [description, setDescription] = useState(sectionDescription);
     const [uploadedImage, setUploadedImage] = useState(sectionImageUrl);
@@ -22,6 +25,8 @@ export default function RenderedSection({index,id,sectionTitle,sectionDescriptio
     const [isModalOpen, setIsModalOpen] = useState(false);
     const [modalMessage, setModalMessage] = useState("");
     const [isImageUploaded,setIsImageUploaded] = useState(false)
+    const [idSec,setIdSec] = useState(id)
+    const [sectionImageUrl1,setSectionImageUrl1] = useState(sectionImageUrl)
 
     const handleTitleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
         setTitle(event.target.value);
@@ -59,24 +64,24 @@ export default function RenderedSection({index,id,sectionTitle,sectionDescriptio
         }
     };
 
-    // const saveSection = async()=>{
-    //     const docRef = doc(getFirestore(), "accommodation-page",id );
-    //     const docSnap = await getDoc(docRef);
-    //     try {
-    //         if(docSnap.exists()){
-    //             await updateDoc(docRef, { title: title,description:description,imageUrl:uploadedImage});
-    //             setModalMessage("Section successfully updated.");
-    //         }else{
-    //             await setDoc(docRef, { title: title,description:description,id:id,imageUrl:uploadedImage});
-    //         }
-    //         setIsModalOpen(true);
-    //     } catch (error) {
-    //       setModalMessage("An error occurred while saving the page.");
-    //       setIsModalOpen(true);
-    //     }
-    // }
+    const deleteSection = async () => {
+      try {
+         onDeleteSection(idSec)
+         fetchPageSections();
+
+        setModalMessage("Section successfully deleted.Please reload the page");
+      } catch (error) {
+        setModalMessage("An error occurred while deleting the section.");
+      }
+
+      setIsModalOpen(true);
+    };
 
     const saveSection = async () => {
+      if(!id){
+        id = title;
+        setIdSec(id)
+      }
       const storage = getStorage();
       const storageRef = ref(storage, `accommodation/accommodation-page-`+ id);
 
@@ -88,12 +93,13 @@ export default function RenderedSection({index,id,sectionTitle,sectionDescriptio
           await uploadString(storageRef, uploadedImage, "data_url");
         }
         const imageUrl = isImageUploaded ? await getDownloadURL(storageRef) : sectionImageUrl;
-        
+        setSectionImageUrl1(imageUrl);
         if(docSnap.exists()){
                 await updateDoc(docRef, { title: title,description:description,imageUrl:imageUrl});
                 setModalMessage("Section successfully updated.");
             }else{
                 await setDoc(docRef, { title: title,description:description,id:id,imageUrl:imageUrl});
+                setModalMessage("Section successfully added.");
             }
             setIsModalOpen(true);
       } catch (error) {
@@ -103,7 +109,7 @@ export default function RenderedSection({index,id,sectionTitle,sectionDescriptio
     };
 
   return (
-    <div>
+    <div key={id + index}>
         <div className={classes.container}>
             <div className={classes.innerContainer}>
                 <h3 className={classes.title}>Page Section {index}</h3>
@@ -168,6 +174,7 @@ export default function RenderedSection({index,id,sectionTitle,sectionDescriptio
                     <TextField InputProps={{ className: classes.inputMultiline }} sx={{width: '300px'}} id="title" multiline={true} variant="outlined" value={description} onChange={handleDescriptionChange}/>
                 </div>
                 <Button className={classes.button} onClick={saveSection}>Save</Button>
+                <Button className={classes.button} onClick={deleteSection}>Delete</Button>
             </div>
             <Modal open={isModalOpen} onClose={closeModal} className={classes.modal}>
               <div className={classes.modalContainer}>

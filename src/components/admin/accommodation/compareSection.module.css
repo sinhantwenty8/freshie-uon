@@ -163,3 +163,21 @@
 .modal{
     border: none;
 }
+
+.saveCategoryButton{
+  width: 100%;
+  height: 30px;
+  padding: 5px;
+  font-size: 14px;
+  background-color: white;
+  border:none;
+  margin-top: 20px;
+  margin-bottom: 20px;
+  cursor: pointer;
+}
+
+.saveCategoryButton:hover{
+  background-color: black;
+  color: white;
+}
+

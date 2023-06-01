@@ -1,4 +1,4 @@
-import { addDoc, collection, deleteDoc, doc, getDoc, getDocs, getFirestore, setDoc, updateDoc } from 'firebase/firestore';
+import { addDoc, collection, deleteDoc, doc, getDoc, getDocs, getFirestore, setDoc, updateDoc, writeBatch } from 'firebase/firestore';
 import { Fragment, useCallback, useEffect, useState } from 'react';
 import classes from './compareSection.module.css';
 import { Button, Input, Modal, TextField } from '@mui/material';
@@ -28,6 +28,9 @@ export default function CompareSection() {
   const firestore = getFirestore();
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [modalMessage, setModalMessage] = useState("");
+  const [categories,setCategories] = useState<String[]>([])
+  const [category1,setCategory1] = useState('')
+  const [category2,setCategory2] = useState('')
 
   const getAccommodationAdvantages = async () => {
     const querySnapshot = await getDocs(collection(firestore, 'accommodation-advantage'));
@@ -36,16 +39,27 @@ export default function CompareSection() {
       ...doc.data(),
     })) as AccommodationAdvantage[];
 
-    setHdbAdvantages(accommodationAdvantageList.filter((advantage) => advantage.category === 'HDB'));
-    setCondoAdvantages(accommodationAdvantageList.filter((advantage) => advantage.category === 'Condo'));
+    setHdbAdvantages(accommodationAdvantageList.filter((advantage) => advantage.category === category2));
+    setCondoAdvantages(accommodationAdvantageList.filter((advantage) => advantage.category === category1));
   };
 
-  useEffect(() => {
-    getAccommodationAdvantages();
-  }, []);
+    useEffect(() => {
+      getAccommodationAdvantages();
+    }, [categories]);
 
+    const getCategories = async () => {
+      const querySnapshot = await getDocs(collection(firestore, 'accommodation-advantage'));
+      const categories = querySnapshot.docs.map((doc) => doc.data().category);
+      setCategories(categories);
+      setCategory1(categories[0])
+      setCategory2(categories[1])
+    };
 
-const closeModal = () => {
+    useEffect(() => {
+      getCategories();
+    }, []);
+
+  const closeModal = () => {
     setIsModalOpen(false);
     setModalMessage("");
   };
@@ -57,9 +71,9 @@ const closeModal = () => {
       const newAdvantageWithId = { ...newAdvantage, id: docRef.id };
       const docRefUpdate = await setDoc(docRef, { ...newAdvantageWithId });
 
-      if (newAdvantageWithId.category === 'HDB') {
+      if (newAdvantageWithId.category === category2) {
         setHdbAdvantages((prevAdvantages) => [...prevAdvantages, newAdvantageWithId]);
-      } else if (newAdvantageWithId.category === 'Condo') {
+      } else if (newAdvantageWithId.category === category1) {
         setCondoAdvantages((prevAdvantages) => [...prevAdvantages, newAdvantageWithId]);
       }
 
@@ -211,13 +225,118 @@ const closeModal = () => {
       }
   }
 
+  const onCategory2Change = (event: React.ChangeEvent<HTMLInputElement>) => {
+  const newCategory = event.target.value;
+  setCategory2(newCategory);
+
+  // Update the category for all advantages in Section 2
+  setHdbAdvantages((prevAdvantages) =>
+    prevAdvantages.map((advantage) => ({
+      ...advantage,
+      category: newCategory,
+    }))
+  );
+};
+
+
+const onCategory1Change = (event: React.ChangeEvent<HTMLInputElement>) => {
+  const newCategory = event.target.value;
+  setCategory1(newCategory);
+
+  // Update the category for all advantages in Section 1
+  setCondoAdvantages((prevAdvantages) =>
+    prevAdvantages.map((advantage) => ({
+      ...advantage,
+      category: newCategory,
+    }))
+  );
+};
+
+
+const saveCategory1 = async () => {
+  try {
+    const batch = writeBatch(firestore);
+    
+    // Update the category for each accommodation advantage in the condoAdvantages array
+    condoAdvantages.forEach((advantage) => {
+      const advantageRef = doc(firestore, 'accommodation-advantage', advantage.id);
+      batch.update(advantageRef, { category: category1 });
+    });
+
+    // Update the category in the categories collection
+    const docRef = doc(getFirestore(), "accommodation-advantage","category");
+    const docSnap = await getDoc(docRef);
+    await updateDoc(docRef, {category1:category1})
+
+    // Commit the batch write
+    await batch.commit().then(()=>{
+      setModalMessage("Category successfully updated.");
+      setIsModalOpen(true)
+    });
+
+    
+    setEditAdvantageId(null); // Clear the editAdvantageId state to exit edit mode
+  } catch (error) {
+    // Handle the error
+    setModalMessage('Error updating category:'+ error);
+    setIsModalOpen(true)
+  }
+};
+
+// Similarly, modify the saveCategory2 function for Section 2
+const saveCategory2 = async () => {
+  try {
+    const batch = writeBatch(firestore);
+    
+    // Update the category for each accommodation advantage in the hdbAdvantages array
+    hdbAdvantages.forEach((advantage) => {
+      const advantageRef = doc(firestore, 'accommodation-advantage', advantage.id);
+      batch.update(advantageRef, { category: category2 });
+    });
+
+    // Update the category in the categories collection
+    const docRef = doc(getFirestore(), "accommodation-advantage","category");
+    const docSnap = await getDoc(docRef);
+    await updateDoc(docRef, {category2:category2})
+
+    // Commit the batch write
+    await batch.commit().then(()=>{
+      setModalMessage("Category successfully updated.");
+      setIsModalOpen(true)
+    });
+
+    console.log('Category updated successfully');
+    setEditAdvantageId(null); // Clear the editAdvantageId state to exit edit mode
+  } catch (error) {
+    // Handle the error
+    setModalMessage('Error updating category:'+ error);
+    setIsModalOpen(true)
+  }
+};
+
+
   return (
     <div className={classes.container}>
       <div className={classes.innerContainer}>
         <div className={classes.titleContainer}>
-          <h3 className={classes.title}>{condoAdvantages.length != 0 ? condoAdvantages[0].category + " Advantages" : "Loading"}</h3>
+          <h3 className={classes.title}>Section 1</h3>
+           <div className={classes.textFieldContainer}>
+            <h4 className={`${classes.subTitle}`}>Category</h4>
+            <TextField
+              InputProps={{ className: classes.input }}
+              sx={{ width: "310px" }}
+              size="small"
+              id="width"
+              variant="outlined"
+              onChange={onCategory1Change}
+              value={category1}
+            />
+          </div>
+          <button className={classes.saveCategoryButton} onClick={saveCategory1}>
+            Save Category
+          </button>
           <div className={classes.textFieldContainer}>
-              <h4 className={`${classes.subTitle}`}>Upload Image :</h4>
+              <h4 className={`${classes.subTitle}`}>Upload Image </h4>
               <Input type="file" id="image" onChange={handleFirstImageUpload}/>
             </div>
             {firstImageError && <p style={{ color: "red",textAlign:'end'}}>{firstImageError}</p>}
@@ -282,9 +401,23 @@ const closeModal = () => {
             </Fragment>
           ))}
         </div>
-        <div className={classes.titleContainer}>
-          <h3 className={classes.title}>{hdbAdvantages.length != 0 ? hdbAdvantages[0].category + " Advantages" : "Loading"}</h3>
-        </div>
+        <h3 className={classes.title}>Section 2</h3>
+        <div className={classes.textFieldContainer}>
+            <h4 className={`${classes.subTitle}`}>Category</h4>
+            <TextField
+              InputProps={{ className: classes.input }}
+              sx={{ width: "310px" }}
+              size="small"
+              id="width"
+              variant="outlined"
+              onChange={onCategory2Change}
+              value={category2}
+            />
+          </div>
+          <button className={classes.saveCategoryButton} onClick={saveCategory2}>
+            Save Category
+          </button>
+
         <div className={classes.textFieldContainer}>
           <h4 className={`${classes.subTitle}`}>Upload Image :</h4>
           <Input type="file" id="image" onChange={handleSecondImageUpload}/>
@@ -363,8 +496,8 @@ const closeModal = () => {
               }
             >
               <option value="">Select Category</option>
-              <option value="HDB">{hdbAdvantages.length != 0 ? hdbAdvantages[0].category : "Loading"}</option>
-              <option value="Condo">{condoAdvantages.length != 0 ? condoAdvantages[0].category : "Loading"}</option>
+              <option value={category2}>{categories.length != 0 ? category2: "Loading"}</option>
+              <option value={category1}>{categories.length != 0 ? category1 : "Loading"}</option>
             </select>
             <div className={classes.addButtonContainer}>
                 <TextField
@@ -396,7 +529,6 @@ const closeModal = () => {
     </div>
   );
 }
-
 
 // import { addDoc, collection, deleteDoc, doc, getDocs, getFirestore, setDoc, updateDoc } from 'firebase/firestore';
 // import { Fragment, useEffect, useState } from 'react';

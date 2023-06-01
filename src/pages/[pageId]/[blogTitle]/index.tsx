@@ -19,6 +19,7 @@ export default function Blog() {
   const [blogHeader, setBlogHeader] = useState<BlogHeader>({ title: "", description: "", imageUrl: "" });
   const [title, setTitle] = useState("");
   const [text, setText] = useState("");
+  const [isPublished,setIsPublished] = useState(false)
 
   const getBlogHeader = useCallback(async () => {
     const querySnapshot = await getDocs(collection(getFirestore(), "accommodation-blog-header"));
@@ -36,6 +37,7 @@ export default function Blog() {
       if (doc.id === blogTitle) {
         setTitle(doc.data().title);
         setText(doc.data().text);
+        setIsPublished(doc.data().isPublishedGlobally)
       }
     });
   }, [blogTitle]);
@@ -52,7 +54,7 @@ export default function Blog() {
     }, 100);
   }, [getBlog]);
 
-  if (blogHeader.title == "") {
+  if (blogHeader.title == "" || isPublished == false) {
     return <p>Page not found</p>;
   }
 
