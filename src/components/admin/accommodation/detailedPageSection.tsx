@@ -149,6 +149,11 @@ export default function DetailedPageSection() {
         setIsModalOpen(true);
         setShowModal(false)
         // Reset the input fields after successful creation
+        setNewSection({id: "",
+          title: "",
+          imageUrl: "",
+          description: "",
+          slug: "",})
       }
     } catch (error) {
       setModalMessage("An error occurred while creating the blog.");
@@ -237,7 +242,11 @@ const handleDeleteBlog = async (blogId: string) => {
               />
               <div className={classes.modalButtons}>
                 <button className={classes.modalButton} onClick={() => handleCreateBlog()}>Add</button>
-                <button className={classes.modalButton} onClick={() => setShowModal(false)}>Cancel</button>  
+                <button className={classes.modalButton} onClick={() => {setShowModal(false);setNewSection({id: "",
+          title: "",
+          imageUrl: "",
+          description: "",
+          slug: "",})}}>Cancel</button>  
              </div>
           </div>
           </div>

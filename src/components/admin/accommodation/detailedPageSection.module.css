@@ -76,12 +76,23 @@
 }
 
 .blogContainer{
-    margin-bottom: 30px;
     display: flex;
     justify-content: center;
     align-items: center;
     background-color: white;
     cursor: pointer;
+}
+
+.blogContainer{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background-color: white;
+    cursor: pointer;
+}
+
+.blogContainer:last-child{
+
 }
 
 .deleteIcon{
