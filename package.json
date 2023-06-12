@@ -46,6 +46,7 @@
     "typescript": "5.0.4"
   },
   "devDependencies": {
-    "@types/next": "^9.0.0"
+    "@types/next": "^9.0.0",
+    "prettier": "2.8.8"
   }
 }

@@ -124,23 +124,36 @@
 
 
 @media (max-width: 1168px) {
-.imageContainer1{
-    display: none;
-}
+    .imageContainer1{
+        display: none;
+    }
 
-.imageContainer2{
-    display: none;
-}
+    .imageContainer2{
+        display: none;
+    }
 
-.circle{
-    display: none;
-}
+    .circle{
+        display: none;
+    }
 
 
 
-.imageContainer3{
-    display: none;
-}
+    .imageContainer3{
+        display: none;
+    }
+
+    .container{
+        padding-bottom: 50px;
+        padding-left: 20px;
+    }
+
+    .headerDescription{
+        width: 80%;
+    }
+
+    .headerImage{
+        width: 150px;
+    }
 }
 
 

@@ -1,60 +1,58 @@
-.markdown{
-    color: #879497;
-    font-family: 'Source Sans Pro', sans-serif;
-    font-size: 20px;
-    max-width: 80vw;
-    width: 690px;
-    margin-left: 2vw;
-    margin-bottom: 30px;
+.markdown {
+  color: #879497;
+  font-family: "Source Sans Pro", sans-serif;
+  font-size: 20px;
+  max-width: 80vw;
+  width: 690px;
+  margin-left: 2vw;
+  margin-bottom: 30px;
 }
 
 .markdown h1 {
-    color: #A99191;
-    font-size: 50px;
+  color: #a99191;
+  font-size: 50px;
 }
 
-.markdown strong{
-    color: #498999;
+.markdown strong {
+  color: #498999;
 }
-.name{
-    font-family: 'Source Sans Pro', sans-serif;
-    font-size: 40px;
+.name {
+  font-family: "Source Sans Pro", sans-serif;
+  font-size: 40px;
 }
-.cohort{
-    color: #5F96A7;
-    font-size: 20px;
-}
-
-.container{
-    background-color: #EBEEF0;
+.cohort {
+  color: #5f96a7;
+  font-size: 20px;
 }
 
-.flexContainer{
-    display: flex;
+.container {
+  background-color: #ebeef0;
 }
 
-.bodyContainer{
-    padding: 30px;
+.flexContainer {
+  display: flex;
 }
 
-.upperSecContainer{
-    margin-left:30px
+.bodyContainer {
+  padding: 30px;
 }
 
-.input{
-    background-color: white;
-    margin-bottom: 10px;
+.upperSecContainer {
+  margin-left: 30px;
 }
 
-.sectionTitle{
-    color: #6E94AF;
-    margin: 20px 0px;
-    font-weight: 600;
+.input {
+  background-color: white;
+  margin-bottom: 10px;
 }
 
-.simpleMde{
-    width: 690px;
-    margin-left: 2vw;
+.sectionTitle {
+  color: #6e94af;
+  margin: 20px 0px;
+  font-weight: 600;
 }
 
-
+.simpleMde {
+  width: 690px;
+  margin-left: 2vw;
+}

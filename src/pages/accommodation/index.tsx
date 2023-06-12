@@ -18,15 +18,18 @@ export default function Accommodation() {
   const urlArray: string[] = currentUrl.split("/");
   const pageId = urlArray[1];
   const [isLoading, setIsLoading] = useState(true);
-  const [accommodationHeader, setAccommodationHeader] = useState<AccommodationHeader>({
-    title: "",
-    description: "",
-    imageUrl: "",
-  });
-  const [isPublished,setIsPublished] = useState(false)
+  const [accommodationHeader, setAccommodationHeader] =
+    useState<AccommodationHeader>({
+      title: "",
+      description: "",
+      imageUrl: "",
+    });
+  const [isPublished, setIsPublished] = useState(false);
 
   const getAccommodationHeader = useCallback(async () => {
-    const querySnapshot = await getDocs(collection(getFirestore(), "accommodation-header"));
+    const querySnapshot = await getDocs(
+      collection(getFirestore(), "accommodation-header")
+    );
     querySnapshot.forEach((doc) => {
       if (doc.id === pageId) {
         const accommodationHeader: AccommodationHeader = {
@@ -40,10 +43,12 @@ export default function Accommodation() {
   }, [pageId]);
 
   const getAccommodationPage = useCallback(async () => {
-    const querySnapshot = await getDocs(collection(getFirestore(), "accommodation"));
+    const querySnapshot = await getDocs(
+      collection(getFirestore(), "accommodation")
+    );
     querySnapshot.forEach((doc) => {
       if (doc.id === pageId) {
-        setIsPublished(doc.data().isPublishedGlobally)
+        setIsPublished(doc.data().isPublishedGlobally);
       }
     });
   }, [pageId]);
@@ -51,7 +56,7 @@ export default function Accommodation() {
   useEffect(() => {
     const timeOutId = setTimeout(async () => {
       setIsLoading(true);
-      getAccommodationPage()
+      getAccommodationPage();
       getAccommodationHeader().then(() => setIsLoading(false));
     }, 100);
     return () => clearTimeout(timeOutId);

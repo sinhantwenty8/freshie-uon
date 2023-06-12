@@ -27,12 +27,6 @@ export default function AccommodationCompare() {
     })
   }, [blogTitle]);
 
-  // const getAccommodationHeader = async() =>{
-  // const querySnapshot = await getDocs(collection(getFirestore(), "accommodation-compare-header"));
-  // const accommodationHeader : AccommodationCompareHeader = {title:querySnapshot.docs[0].data().title,description:querySnapshot.docs[0].data().description,imageUrl:querySnapshot.docs[0].data().imageUrl}; 
-  // setAccommodationCompareHeader(accommodationHeader)
-  // }
-
   useEffect(() => {
     setTimeout(()=>{
         getAccommodationHeader()

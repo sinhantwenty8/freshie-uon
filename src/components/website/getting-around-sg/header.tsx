@@ -21,7 +21,7 @@ const Header: React.FC<HeaderProps> = ({ title,description1,description2,drawing
                     <h1 className={classes.headerTitle}>{title}</h1>
                     <img className={classes.headerImage} src={drawingUrl}></img>
                 </div>
-                <p className={classes.headerDescription}>{description1}<br></br>{description2}</p>
+                <p className={classes.headerDescription}>{description1}<br></br></p>
                 <div className={classes.imageContainer1}>
                     <img className={classes.headerImage1} src={image1Url}></img>
                 </div>

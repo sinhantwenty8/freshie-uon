@@ -1,29 +1,29 @@
-.previewButton{
-    background-color: white;
-    color: black;
+.previewButton {
+  background-color: white;
+  color: black;
 }
 
-.previewButton:hover{
-    background-color: black;
-    color: white;
+.previewButton:hover {
+  background-color: black;
+  color: white;
 }
 
-.saveButton{
-    background-color: #86A7D3;
-    color: white;
-    margin: 20px;
-    margin-left: 0px;
+.saveButton {
+  background-color: #86a7d3;
+  color: white;
+  margin: 20px;
+  margin-left: 0px;
 }
 
-.input{
-    background-color: white;
+.input {
+  background-color: white;
 }
 
-.sectionTitle{
-    color: #6E94AF;
-    margin: 20px 0px;
-    font-weight: 600;
-    font-size: 14px;
+.sectionTitle {
+  color: #6e94af;
+  margin: 20px 0px;
+  font-weight: 600;
+  font-size: 14px;
 }
 
 .publishContainer {
@@ -33,11 +33,9 @@
 
 /* Media Query for Small Screens */
 @media (max-width: 1000px) {
-  
-    .container{
-        width: max-content;
-        margin-left:auto;
-        margin-right: auto;
-    }
-
+  .container {
+    width: max-content;
+    margin-left: auto;
+    margin-right: auto;
+  }
 }

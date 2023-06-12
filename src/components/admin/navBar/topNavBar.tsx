@@ -19,11 +19,13 @@ export default function TopNavBarAdmin({ onClose }: TopNavBarAdminProps) {
   };
 
   return (
-    <div >
+    <div>
       <div className={classes.topNavBar}>
         <div className={classes.topNavContainer}>
           <Menu onClick={handleMenuClick} fontSize="large" />
-          <h1 className={classes.title}>Freshie <sup>UON</sup></h1>
+          <h1 className={classes.title}>
+            Freshie <sup>UON</sup>
+          </h1>
         </div>
       </div>
     </div>

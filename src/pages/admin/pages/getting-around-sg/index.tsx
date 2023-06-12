@@ -12,11 +12,12 @@ import Button from "@mui/material/Button";
 import { Send } from '@mui/icons-material';
 import dynamic from 'next/dynamic'
 import "easymde/dist/easymde.min.css";
-import HeaderEdit from "@/components/admin/pagesContent/hearderEdit";
 import { Modal } from "@mui/material";
 import { getStorage, ref, uploadString, getDownloadURL, uploadBytes } from "firebase/storage";
-import DetailedPageSection from "@/components/admin/accommodation/detailedPageSection";
+import DetailedPageSection from "@/components/admin/getting-around-sg/detailedPageSection";
 import CompareSection from "@/components/admin/accommodation/compareSection";
+import HeaderEdit from "@/components/admin/getting-around-sg/hearderEdit";
+import { CircularProgress } from "@mui/material";
 
 interface Blog{
   id:string,
@@ -24,7 +25,19 @@ interface Blog{
   compareImageUrl:string;
 }
 
-export default function AccommodationPage() {
+interface Header{
+    description1:string,
+    description2:string,
+    drawingUrl:string,
+    image1Url:string,
+    image2Url:string,
+    image3Url:string,
+    image4Url:string,
+    image5Url:string,
+    title:string,
+}
+
+export default function GettingAroundSgPage() {
   const router = useRouter();
   const currentUrl = router.asPath;
   const urlArray : string[] = currentUrl.split("/")
@@ -47,9 +60,8 @@ export default function AccommodationPage() {
   const [createdAt, setCreatedAt] = useState(Timestamp.now);
   const [isPublishedGlobally,setisPublishedGlobally] = useState(false)
   const [isImageUploaded,setIsImageUploaded] = useState(false)
-  const [pageSectionTitle,setPageSectionTitle] = useState("")
-  const [pageSectionDescription,setPageSectionDescription] = useState("")
-  const [pageSectionImageUrl,setPageSectionImageUrl] = useState("")
+  const [pageSectionTitle,setPageSectionTitle] = useState('')
+  const [videoUrl,setVideoUrl] = useState('')
 
   const closeModal = () => {
     setIsModalOpen(false);
@@ -57,27 +69,36 @@ export default function AccommodationPage() {
   };
 
   const fetchPage = useCallback(async () => {
-    const querySnapshot = await getDocs(collection(getFirestore(), 'accommodation'));
+    const querySnapshot = await getDocs(collection(getFirestore(), 'getting-around-sg'));
     querySnapshot.forEach((doc)=>{
       console.log(blogTitle,doc.id)
       let docSlug = doc.id;
       setslug(slug=>blogTitle);
       if(docSlug == blogTitle){
-        settitle(title=>doc.data().title)
+        settitle(title=>doc.data().cmsTitle)
         setBlog({id:doc.id,blogTitle:doc.data().title,compareImageUrl:doc.data().compareImageUrl})
         setisPublishedGlobally(doc.data().isPublishedGlobally)
         setPostedBy(doc.data().postedBy)
         setCreatedAt(doc.data().createdAt)
       }
     })
-    const docs = await getDocs(collection(getFirestore(),`accommodation-header`));
+    const docs = await getDocs(collection(getFirestore(),`getting-around-header`));
     docs.forEach((doc)=>{
       if(doc.id==blogTitle){
         setBannerTitle(doc.data().title)
-        setBannerDescription(doc.data().description)
-        setBannerImageUrl(doc.data().imageUrl)
+        setBannerDescription(doc.data().description1)
+        setBannerImageUrl(doc.data().drawingUrl)
       }
     })
+
+    const docs2 = await getDocs(collection(getFirestore(),`getting-around`));
+    docs2.forEach((doc)=>{
+      if(doc.id==blogTitle){
+        setPageSectionTitle(doc.data().title)
+        setVideoUrl(doc.data().youtubeUrl)
+      }
+    })
+
   }, [blogTitle]);
 
   useEffect(() => {
@@ -90,28 +111,30 @@ export default function AccommodationPage() {
 
 
       const postPage = async () => {
-        const docRef = doc(getFirestore(), "accommodation", slug);
-        const docCurRef = doc(getFirestore(), "accommodation", blogTitle);
-        const docSnap = await getDoc(docRef);
+        const docRef = doc(getFirestore(), "getting-around-sg", slug);
+        const docCurRef = doc(getFirestore(), "getting-around-sg", blogTitle);
         const docCurSnap = await getDoc(docCurRef)
-        console.log(slug ,blogTitle)
+        const docRef2 = doc(getFirestore(), "getting-around", blogTitle);
+        const docCur2Snap = await getDoc(docRef2)
         try {
           if (docCurSnap.exists()) {
-            if(slug !=blogTitle ){
-              await deleteDoc(docCurRef).then(()=>setModalMessage("Page successfully deleted."));
-              await setDoc(docRef, { title: title, createdAt: timestamp, postedBy: "Admin" ,isPublishedGlobally:isPublishedGlobally}).then(()=>{
-                router.replace(`/admin/pages/${slug}`)
-              });
-              setModalMessage("Page successfully updated.");
-            }else{
-              console.log('hi')
-              await updateDoc(docRef, { title: title,isPublishedGlobally:isPublishedGlobally});
-              setModalMessage("Page successfully updated.");
-            }
+            await updateDoc(docRef, { cmsTitle: title,isPublishedGlobally:isPublishedGlobally});
+            setModalMessage("Page successfully updated.");
           } else {
-            await setDoc(docRef, { title: title, createdAt: timestamp, postedBy: "Admin" });
+            await setDoc(docRef, { cmsTitle: title, createdAt: timestamp, postedBy: "Admin" });
             setModalMessage("Page successfully added.");
           }
+          console.log(docCur2Snap)
+
+          if (docCur2Snap.exists()) {
+            await updateDoc(docRef2, { title: pageSectionTitle,youtubeUrl:videoUrl});
+            setModalMessage("Page successfully updated.");
+          } else {
+            await setDoc(docRef2, { title: pageSectionTitle,youtubeUrl:videoUrl});
+            console.log(pageSectionTitle)
+            setModalMessage("Page successfully added.");
+          }
+
           setIsModalOpen(true);
         } catch (error) {
           setModalMessage("An error occurred while saving the page.");
@@ -119,60 +142,38 @@ export default function AccommodationPage() {
         }
       }
 
-      const postPagePreview = async () => {
-        const docRef = doc(getFirestore(), `${blogTitle}-preview`, slug);
-        const docCurRef = doc(getFirestore(), `${blogTitle}-preview`, blogTitle);
-        const docSnap = await getDoc(docRef);
-        const docCurSnap = await getDoc(docCurRef)
-        console.log(slug == blogTitle)
-        try {
-          if (docCurSnap.exists()) {
-            if(slug !=blogTitle ){
-              await deleteDoc(docCurRef).then(()=>setModalMessage("Page successfully deleted."));
-              await setDoc(docRef, { title: title, createdAt: timestamp, postedBy: "Admin" ,isPublishedGlobally:isPublishedGlobally}).then(()=>{
-                router.replace(`/${slug}/preview`)
-              });
-            }else{
-              console.log('hi')
-              await updateDoc(docRef, { title: title,isPublishedGlobally:isPublishedGlobally}).then(()=>{
-                router.replace(`/${slug}/preview`)
-              });
-            }
-          } else {
-            await setDoc(docRef, { title: title, createdAt: timestamp, postedBy: "Admin" }).then(()=>{
-                router.replace(`/${slug}/preview`)
-              });
-          }
-        } catch (error) {
-          setModalMessage("An error occurred.");
-          setIsModalOpen(true);
-        }
-      }
-
     const postHeader = async () => {
       const storage = getStorage();
-      const storageRef = ref(storage, `accommodation/${blogTitle}-header-banner/`);
+      const storageRef = ref(storage, `getting-around-sg/${blogTitle}-header-banner/`);
 
       try {
         if (isImageUploaded) {
           await uploadString(storageRef, bannerImageUrl, "data_url");
         }
         const imageUrl = isImageUploaded ? await getDownloadURL(storageRef) : bannerImageUrl;
-        const docRef = doc(getFirestore(), `accommodation-header`, slug);
+        const docRef = doc(getFirestore(), `getting-around-header`, slug);
         const docSnap = await getDoc(docRef);
-        const curDocRef =doc(getFirestore(), `accommodation-header`, blogTitle);
+        const curDocRef =doc(getFirestore(), `getting-around-header`, blogTitle);
         const curDocSnap = await getDoc(curDocRef);
         if (curDocSnap.exists()) {
           // Delete the existing document if the slug is not the same
           if (slug != blogTitle) {
             await deleteDoc(curDocRef).then(()=>setModalMessage("Header successfully deleted."));
-            await setDoc(docRef, { title: bannerTitle, description: bannerDescription, imageUrl ,slug:slug});
+            await setDoc(docRef, { title: bannerTitle, description: bannerDescription, drawingUrl:imageUrl ,slug:slug});
           }else{
-            await updateDoc(docRef, { title: bannerTitle, description: bannerDescription, imageUrl ,slug:slug});
+            if(blogTitle == "getting-around-sg"){
+              await updateDoc(docRef, { title: bannerTitle, description: bannerDescription, drawingUrl:imageUrl ,slug:slug});
+            }else{
+              await updateDoc(docRef, { title: bannerTitle, description: bannerDescription, imageUrl ,slug:slug});
+            }
           }
           setModalMessage("Page successfully updated.");
         } else {
-          await setDoc(docRef, { title: bannerTitle, description: bannerDescription, imageUrl });
+          if(blogTitle == "getting-around-sg"){
+          await setDoc(docRef, { title: bannerTitle, description: bannerDescription, drawingUrl:imageUrl})
+          }else{
+             await setDoc(docRef, {title: bannerTitle, description: bannerDescription, imageUrl })
+          };
           setModalMessage("Page successfully added.");
         }
 
@@ -183,53 +184,44 @@ export default function AccommodationPage() {
       }
     };
 
-    const postHeaderPreview = async () => {
-      const storage = getStorage();
-      const storageRef = ref(storage, `accommodation/${blogTitle}-header-banner-preview/`);
+    const postPagePreview = async () => {
+    
+    }
 
-      try {
-        if (isImageUploaded) {
-          await uploadString(storageRef, bannerImageUrl, "data_url");
-        }
-        const imageUrl = isImageUploaded ? await getDownloadURL(storageRef) : bannerImageUrl;
-        const docRef = doc(getFirestore(), `accommodation--header-preview`, slug);
-        const docSnap = await getDoc(docRef);
-        const curDocRef =doc(getFirestore(), `accommodation-header-preview`, blogTitle);
-        const curDocSnap = await getDoc(curDocRef);
-        if (curDocSnap.exists()) {
-          if (slug != blogTitle) {
-            await deleteDoc(curDocRef).then(()=>setModalMessage("Header successfully deleted."));
-            await setDoc(docRef, { title: bannerTitle, description: bannerDescription, imageUrl ,slug:slug});
-          }else{
-            await updateDoc(docRef, { title: bannerTitle, description: bannerDescription, imageUrl ,slug:slug});
-          }
-        } else {
-          await setDoc(docRef, { title: bannerTitle, description: bannerDescription, imageUrl });
-        }
-      } catch (error) {
-        setModalMessage("An error occurred.");
-        setIsModalOpen(true);
-      }
+    const postHeaderPreview = async () => {
+
     };
 
     const onTitleChange = (title: string) => {
         settitle(title)
     }
 
-  const returnSection = blogTitle == "accommodation-compare" ? 
+    const onPageSectionTitleChange = (title: string) => {
+        setPageSectionTitle(title)
+    }
+
+    const onVideoUrlChange = (url: string) => {
+        setVideoUrl(url)
+    }
+
+
+  const returnSection = 
   <div className={classes.upperSecContainer}>
-      <h3 className={classes.sectionTitle}>Compare Section</h3>
-      <CompareSection></CompareSection>
-  </div>
-  : 
-  <div className={classes.upperSecContainer}>
-      <h3 className={classes.sectionTitle}>Blogs</h3>
+      <h3 className={classes.sectionTitle}>Page Section Title</h3> 
+        <TextField InputProps={{ className: classes.input }} sx={{width: '600px'}} size="small" id="title" variant="outlined" onChange={(e) => onPageSectionTitleChange(e.target.value)} value={pageSectionTitle}/>
+        <h3 className={classes.sectionTitle}>Video Url</h3>
+        <TextField InputProps={{ className: classes.input }} style={{marginBottom:"30px"}} sx={{width: '600px'}} size="small" id="videoUrl" variant="outlined"value={videoUrl}  onChange={(e) => onVideoUrlChange(e.target.value)} />
+        <h3 className={classes.sectionTitle}>Sub Pages</h3>
       <DetailedPageSection></DetailedPageSection>
   </div>
 
   return (
     <div>
-      {isLoading ? <p>Loading...</p> :
+      {isLoading ? 
+      <div className={classes.loading}>
+          <CircularProgress /> {/* Display the spinner */}
+          <p>Loading...</p>
+      </div>:
        blog.blogTitle === "" ?
       <p>Page not found</p> :
       <div className={classes.container}>
@@ -260,3 +252,4 @@ export default function AccommodationPage() {
     </div>
   );
 }
+

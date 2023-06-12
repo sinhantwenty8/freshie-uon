@@ -91,6 +91,17 @@
   border: none;
 }
 
+.loading{
+    height: max-content;
+    display: flex;
+    height: 100vh;
+    width: 100%;
+    justify-content: center;
+    align-items: center;
+    font-weight: 500;
+    background-color: white;
+  }
+
 /* Media Query for Small Screens */
 @media (max-width: 1000px) {
   

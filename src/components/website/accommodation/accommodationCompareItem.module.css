@@ -1,5 +1,5 @@
 .container {
-  background-color: #E7EAED;
+  background-color: #e7eaed;
   padding: 3vw;
   margin: 2vw;
 }
@@ -17,18 +17,18 @@
 
 .viewButton {
   width: 100%;
-  background-color: #1F304A;
+  background-color: #1f304a;
   height: 5vw;
   border: none;
-  color: #E3E2E1;
+  color: #e3e2e1;
   margin-top: 5vw;
   font-size: 1.6vw;
   padding: 1vw 2vw;
 }
 
 .viewButton:hover {
-  background-color: #E3E2E1;
-  color: #1F304A;
+  background-color: #e3e2e1;
+  color: #1f304a;
 }
 
 /* Media Query for Small Screens */
