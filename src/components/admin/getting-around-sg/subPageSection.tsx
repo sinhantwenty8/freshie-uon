@@ -30,6 +30,7 @@ interface Blog {
   id: string;
   title: string;
   slug: string;
+  createdIn: string;
 }
 
 interface PageSection {
@@ -67,7 +68,9 @@ export default function SubPageSection() {
     id: "",
     title: "",
     slug: "",
+    createdIn: blogTitle,
   });
+  console.log(blogTitle);
 
   const fetchPageSections = useCallback(async () => {
     const querySnapshot = await getDocs(
@@ -163,8 +166,9 @@ export default function SubPageSection() {
     const fetchedBlogs: Blog[] = [];
     querySnapshot.forEach((doc) => {
       const blogData = doc.data() as Blog;
-      fetchedBlogs.push(blogData);
-      console.log(doc.data().slug);
+      if (blogData.createdIn == blogTitle) {
+        fetchedBlogs.push(blogData);
+      }
     });
     setBlogs(fetchedBlogs);
   }, []);
@@ -202,6 +206,8 @@ export default function SubPageSection() {
             createdAt: timestamp,
             postedBy: "Admin",
             text: " ",
+            createdIn: blogTitle,
+            isPublishedGlobally: true,
           }).then(() => {
             fetchBlogs();
           });
@@ -209,7 +215,7 @@ export default function SubPageSection() {
           setIsModalOpen(true);
           setShowModal(false);
           // Reset the input fields after successful creation
-          setNewBlog({ id: "", title: "", slug: "" });
+          setNewBlog({ id: "", title: "", slug: "", createdIn: blogTitle });
         }
       } catch (error) {
         setModalMessage("An error occurred while creating the page.");
@@ -291,7 +297,6 @@ export default function SubPageSection() {
       >
         Add Page Section
       </button>
-
       {showModal && (
         <div className={classes.modal}>
           <div className={classes.modalContainer}>
@@ -324,7 +329,12 @@ export default function SubPageSection() {
                 className={classes.modalButton}
                 onClick={() => {
                   setShowModal(false);
-                  setNewBlog({ id: "", title: "", slug: "" });
+                  setNewBlog({
+                    id: "",
+                    title: "",
+                    slug: "",
+                    createdIn: blogTitle,
+                  });
                 }}
               >
                 Cancel

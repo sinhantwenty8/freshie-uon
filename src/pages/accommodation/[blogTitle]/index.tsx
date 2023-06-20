@@ -66,7 +66,7 @@ export default function Blog() {
     }, 100);
   }, [getBlog]);
 
-  if (blogHeader.title == "" || isPublished == false) {
+  if ((blogHeader.title == "" && title == "") || isPublished == false) {
     return <p>Page not found</p>;
   }
 

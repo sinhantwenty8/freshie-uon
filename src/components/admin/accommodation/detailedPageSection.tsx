@@ -104,6 +104,12 @@ export default function DetailedPageSection() {
   };
 
   const handleDeleteSection = async (id: string) => {
+    if (!id) {
+      setPageSections((prevPageSections) =>
+        prevPageSections.filter((section) => section.id !== id)
+      );
+      return;
+    }
     const docRef = doc(getFirestore(), "accommodation-page", id);
 
     try {

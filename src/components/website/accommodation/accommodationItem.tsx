@@ -35,7 +35,7 @@ const AccommodationItem: React.FC<AccommodationItemProps> = ({
           height={200}
         ></img>
       </div>
-      <Link href={`/accommodation/${accommodation.id}`}>
+      <Link href={accommodation.detailedPageUrl}>
         <button className={classes.viewButton}>View More</button>
       </Link>
     </div>

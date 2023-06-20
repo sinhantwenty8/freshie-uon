@@ -133,6 +133,7 @@ export default function RenderedSection({
           title: title,
           description: description,
           imageUrl: imageUrl,
+          detailedPageUrl: detailedPageUrl,
         });
         setModalMessage("Section successfully updated.");
       } else {
@@ -167,36 +168,6 @@ export default function RenderedSection({
               value={title}
               onChange={handleTitleChange} // Add this line
             />
-          </div>
-          <div className={classes.textFieldContainer}>
-            <h4 className={`${classes.subTitle}`}>Header Section Size:</h4>
-            <div style={{ display: "flex", alignItems: "center" }}>
-              <p className={classes.secondSubTitle}>Width</p>
-              <TextField
-                InputProps={{ className: classes.input }}
-                sx={{ width: "80px" }}
-                size="small"
-                id="width"
-                variant="outlined"
-              />
-              <p
-                style={{
-                  marginLeft: "20px",
-                  marginRight: "20px",
-                  color: "rgba(0,0,0,0.5)",
-                }}
-              >
-                X
-              </p>
-              <p className={classes.secondSubTitle}>Height</p>
-              <TextField
-                InputProps={{ className: classes.input }}
-                sx={{ width: "80px" }}
-                size="small"
-                id="width"
-                variant="outlined"
-              />
-            </div>
           </div>
           <div className={classes.imgContainer}>
             <div className={classes.textFieldContainer}>
