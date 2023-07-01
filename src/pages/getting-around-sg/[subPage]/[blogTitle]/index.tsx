@@ -7,6 +7,7 @@ import { getFirestore, collection, getDocs } from "firebase/firestore";
 import { useRouter } from "next/router";
 import { ReactMarkdown } from "react-markdown/lib/react-markdown";
 import { CircularProgress } from "@mui/material";
+import FoodWheel from "@/components/website/getting-around-sg/foodWheel";
 
 interface BlogHeader {
   title: string;
@@ -95,6 +96,7 @@ export default function Blog() {
       <div className={classes.markDownContainer}>
         <div className={classes.markDownLayer}>
           <ReactMarkdown className={classes.markdown}>{text}</ReactMarkdown>
+          {blogTitle == "food" ? <FoodWheel></FoodWheel> : null}
         </div>
       </div>
     </div>

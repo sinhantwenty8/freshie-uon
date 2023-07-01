@@ -1,160 +1,181 @@
-.container{
-    background-color: #EBEEF0;
-    
+.container {
+  background-color: #ebeef0;
 }
 
-.flexContainer{
-    display: flex;
+.flexContainer {
+  display: flex;
 }
 
-.bodyContainer{
-    padding: 30px;
+.bodyContainer {
+  padding: 30px;
 }
 
-.upperSecContainer{
-    margin-left:30px
+.upperSecContainer {
+  margin-left: 30px;
 }
 
-.input{
-    background-color: white;
-    margin-bottom: 10px;
+.input {
+  background-color: white;
+  margin-bottom: 10px;
 }
 
-.sectionTitle{
-    color: #6E94AF;
-    margin: 20px 0px;
-    font-weight: 600;
+.sectionTitle {
+  color: #6e94af;
+  margin: 20px 0px;
+  font-weight: 600;
 }
 
-
-.markdown{
-    color: #879497;
-    font-family: 'Source Sans Pro', sans-serif;
-    font-size: 20px;
-    max-width: 80vw;
-    width: 690px;
-    margin-left: 2vw;
-    margin-bottom: 30px;
+.markdown {
+  color: #879497;
+  font-family: "Source Sans Pro", sans-serif;
+  font-size: 20px;
+  max-width: 80vw;
+  width: 690px;
+  margin-left: 2vw;
+  margin-bottom: 30px;
 }
 
 .markdown h1 {
-    color: #A99191;
-    font-size: 50px;
+  color: #a99191;
+  font-size: 50px;
 }
 
-.markdown strong{
-    color: #498999;
+.markdown strong {
+  color: #498999;
 }
 
 .markdown p {
   margin-bottom: 1em;
 }
 
-.markdown li:last-child{
+.markdown li:last-child {
   margin-bottom: 1em;
 }
 
-.name{
-    font-family: 'Source Sans Pro', sans-serif;
-    font-size: 40px;
+.name {
+  font-family: "Source Sans Pro", sans-serif;
+  font-size: 40px;
 }
-.cohort{
-    color: #5F96A7;
-    font-size: 20px;
-}
-
-.container{
-    background-color: #EBEEF0;
+.cohort {
+  color: #5f96a7;
+  font-size: 20px;
 }
 
-.flexContainer{
-    display: flex;
+.container {
+  background-color: #ebeef0;
 }
 
-.bodyContainer{
-    padding: 30px;
+.flexContainer {
+  display: flex;
 }
 
-.upperSecContainer{
-    margin-left:30px
+.bodyContainer {
+  padding: 30px;
 }
 
-.input{
-    background-color: white;
-    margin-bottom: 10px;
+.upperSecContainer {
+  margin-left: 30px;
 }
 
-.sectionTitle{
-    color: #6E94AF;
-    margin: 20px 0px;
-    font-weight: 600;
+.input {
+  background-color: white;
+  margin-bottom: 10px;
 }
 
-.simpleMde{
-    width: 690px;
-    margin-left: 2vw;
+.sectionTitle {
+  color: #6e94af;
+  margin: 20px 0px;
+  font-weight: 600;
 }
 
-.button{
-    margin-left: 2vw;
+.simpleMde {
+  width: 690px;
+  margin-left: 2vw;
+}
+
+.button {
+  margin-left: 2vw;
 }
 
 .modalContainer {
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    align-items: center;
-    background-color: #fff;
-    width: 300px;
-    height: 200px;
-    padding: 20px;
-    margin: auto;
-    margin-top: 40vh;
-    font-size: 13px;
-    border-radius: 20px;
-    border: none;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  background-color: #fff;
+  width: 300px;
+  height: 200px;
+  padding: 50px;
+  margin: auto;
+  margin-top: 30vh;
+  font-size: 13px;
+  border-radius: 20px;
+  border: none;
 }
 
-.modalContainer h2{
-    font-weight: 400;
-    margin-bottom: 30px;
+.modalContainer h2 {
+  font-weight: 400;
+  margin-bottom: 30px;
 }
 
-.modal{
-    border: none;
+.modal {
+  border: none;
 }
 
-.loading{
-    height: max-content;
-    display: flex;
-    height: 100vh;
-    width: 100%;
-    justify-content: center;
-    align-items: center;
-    font-weight: 500;
-    background-color: white;
-  }
+.modal {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.5);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 30px;
+}
 
-/* Media Query for Small Screens */
-@media (max-width: 1000px) {
-  
-    .flexContainer{
-        display: block;
-    }
+.modalInput {
+  width: 100%;
+  padding: 10px;
+  margin-bottom: 10px;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+}
 
-    .input{
-        width: 500px;
-    }
+.modalButtons {
+  display: flex;
+  justify-content: flex-end;
+  margin-top: 20px;
+}
 
-    .simpleMde{
-        width: 510px;
-        margin: auto;
-    }
+.modalButton {
+  padding: 8px 16px;
+  margin-left: 10px;
+  border-radius: 4px;
+  border: none;
+  background-color: #86a7d3;
+  color: #fff;
+  font-size: 14px;
+  cursor: pointer;
+}
 
-    .sideBar{
-        margin: auto;
-        width: max-content;
-        justify-content: center;
-        align-items: center;
-    }
+.modalButtons button:hover {
+  opacity: 0.8;
+}
+
+.button {
+  background-color: #86a7d3;
+  color: white;
+  width: 95%;
+  border: none;
+  height: 35px;
+  font-size: 16px;
+  cursor: pointer;
+}
+
+.button:hover {
+  opacity: 0.8;
+  background-color: white;
+  color: #86a7d3;
 }

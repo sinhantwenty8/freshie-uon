@@ -5,6 +5,7 @@ import { CircularProgress, TextField } from "@mui/material";
 import SideBar from "@/components/admin/sideBar/sideBar";
 import { FunctionComponent, useCallback, useEffect, useState } from "react";
 import { initializeApp } from "firebase/app";
+
 import {
   addDoc,
   collection,
@@ -29,7 +30,16 @@ import {
   uploadString,
   getDownloadURL,
   uploadBytes,
+  deleteObject,
 } from "firebase/storage";
+import FoodWheel from "@/components/admin/getting-around-sg/foodWheel";
+import FoodItem from "@/components/admin/getting-around-sg/foodWheel";
+
+type Food = {
+  id: string;
+  name: string;
+  foodShopLogo: string;
+};
 
 const SimpleMDE = dynamic(() => import("react-simplemde-editor"), {
   ssr: false,
@@ -70,6 +80,9 @@ export default function DetailPage() {
   const [createdAt, setCreatedAt] = useState(Timestamp.now);
   const [isPublishedGlobally, setisPublishedGlobally] = useState(false);
   const [isImageUploaded, setIsImageUploaded] = useState(false);
+  const [foods, setFoods] = useState<Food[]>([]);
+  const [newFoodName, setNewFoodName] = useState("");
+  const [isFoodModalOpen, setIsFoodModalOpen] = useState(false);
 
   const closeModal = () => {
     setIsModalOpen(false);
@@ -231,6 +244,108 @@ export default function DetailPage() {
     settitle(title);
   };
 
+  const fetchFoods = useCallback(async () => {
+    const querySnapshot = await getDocs(
+      collection(getFirestore(), "food-wheel")
+    );
+    const fetchedFoods: Food[] = [];
+    querySnapshot.forEach((doc) => {
+      const foodData = doc.data() as Food;
+      foodData.id = doc.id;
+      fetchedFoods.push(foodData);
+    });
+    console.log(fetchFoods);
+    setFoods(fetchedFoods);
+  }, []);
+
+  useEffect(() => {
+    const timeOutId = setTimeout(async () => {
+      fetchFoods();
+    }, 100);
+    return () => clearTimeout(timeOutId);
+  }, [fetchFoods]);
+
+  const addFood = async () => {
+    if (newFoodName) {
+      try {
+        const docRef = await addDoc(collection(getFirestore(), "food-wheel"), {
+          name: newFoodName,
+          foodShopLogo: "",
+        });
+        const newFood: Food = {
+          id: docRef.id,
+          name: newFoodName,
+          foodShopLogo: "",
+        };
+        setFoods((prevFoods) => [...prevFoods, newFood]);
+        setNewFoodName("");
+        setIsFoodModalOpen(false);
+        setModalMessage("Food successfully added.");
+        setIsModalOpen(true);
+      } catch (error) {
+        setModalMessage("Error adding food.");
+        setIsModalOpen(true);
+      }
+    }
+  };
+
+  const deleteFood = async (foodId: string) => {
+    try {
+      const storage = getStorage();
+      const storageRef = ref(storage, `food-wheel/${foodId}-foodShopLogo`);
+
+      // Delete the image from Firebase Storage
+      await deleteObject(storageRef);
+
+      // Delete the food document from Firestore
+      await deleteDoc(doc(getFirestore(), "food-wheel", foodId));
+
+      setFoods((prevFoods) => prevFoods.filter((food) => food.id !== foodId));
+      setModalMessage("Food successfully deleted.");
+      setIsModalOpen(true);
+    } catch (error) {
+      setModalMessage("Error deleting food.");
+      setIsModalOpen(true);
+    }
+  };
+
+  const updateFood = async (foodId: string, updatedFood: Food) => {
+    try {
+      const storage = getStorage();
+      const storageRef = ref(storage, `food-wheel/${foodId}-foodShopLogo`);
+
+      if (
+        updatedFood.foodShopLogo &&
+        typeof updatedFood.foodShopLogo === "string"
+      ) {
+        // If a new image is provided, upload it to Firebase Storage
+        await uploadString(storageRef, updatedFood.foodShopLogo, "data_url");
+        const imageUrl = await getDownloadURL(storageRef);
+        updatedFood.foodShopLogo = imageUrl;
+      }
+
+      await updateDoc(doc(getFirestore(), "food-wheel", foodId), updatedFood);
+      setFoods((prevFoods) =>
+        prevFoods.map((food) => (food.id === foodId ? updatedFood : food))
+      );
+
+      setModalMessage("Food successfully updated.");
+      setIsModalOpen(true);
+    } catch (error) {
+      console.log(error);
+      setModalMessage("Error updating food.");
+      setIsModalOpen(true);
+    }
+  };
+
+  const handleNameChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+    setNewFoodName(event.target.value);
+  };
+
+  const closeFoodModal = () => {
+    setIsFoodModalOpen(false);
+  };
+
   return (
     <div>
       {isLoading ? (
@@ -293,7 +408,51 @@ export default function DetailPage() {
               <div style={{ color: "red" }}>
                 {errorstates.emptytext ? "Please enter text" : ""}
               </div>
-
+              <div>
+                {foods.map((food) => (
+                  <FoodItem
+                    key={food.id}
+                    food={food}
+                    updateFood={updateFood}
+                    deleteFood={deleteFood}
+                  />
+                ))}
+                <div>
+                  <Button
+                    onClick={() => setIsFoodModalOpen(true)}
+                    className={classes.button}
+                  >
+                    Add Food
+                  </Button>
+                </div>
+                <Modal
+                  open={isFoodModalOpen}
+                  onClose={closeModal}
+                  className={classes.modal}
+                >
+                  <div className={classes.modalContainer}>
+                    <h2>Add Food</h2>
+                    <input
+                      type="text"
+                      placeholder="Food Name"
+                      value={newFoodName}
+                      onChange={handleNameChange}
+                      className={classes.modalInput}
+                    />
+                    <div className={classes.modalButtons}>
+                      <Button className={classes.modalButton} onClick={addFood}>
+                        Add
+                      </Button>
+                      <Button
+                        className={classes.modalButton}
+                        onClick={closeFoodModal}
+                      >
+                        Cancel
+                      </Button>
+                    </div>
+                  </div>
+                </Modal>
+              </div>
               {/* Modal */}
               <Modal
                 open={isModalOpen}

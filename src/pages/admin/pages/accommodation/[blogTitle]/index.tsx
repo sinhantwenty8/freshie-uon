@@ -30,6 +30,7 @@ import {
   getDownloadURL,
   uploadBytes,
 } from "firebase/storage";
+import FoodWheel from "@/components/website/getting-around-sg/foodWheel";
 
 const SimpleMDE = dynamic(() => import("react-simplemde-editor"), {
   ssr: false,
