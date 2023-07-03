@@ -37,6 +37,7 @@ interface PageSection {
   imageUrl: string;
   description: string;
   slug: string; // Add slug property to the PageSection interface
+  detailedPageUrl: string;
 }
 
 export default function DetailedPageSection() {
@@ -49,6 +50,7 @@ export default function DetailedPageSection() {
     imageUrl: "",
     description: "",
     slug: "", // Initialize slug property with an empty string
+    detailedPageUrl: "",
   });
   const [errorstates, seterrorstates] = useState({
     sameslug: false,
@@ -201,6 +203,7 @@ export default function DetailedPageSection() {
             imageUrl: "",
             description: "",
             slug: "",
+            detailedPageUrl: "",
           });
         }
       } catch (error) {
@@ -323,6 +326,7 @@ export default function DetailedPageSection() {
                     imageUrl: "",
                     description: "",
                     slug: "",
+                    detailedPageUrl: "",
                   });
                 }}
               >
