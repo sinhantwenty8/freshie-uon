@@ -223,17 +223,17 @@ const ToDoDetailPage: React.FC = () => {
                     {todo.actions.map((action) => (
                       <Card key={action.id} className={classes.action}>
                         <CardContent>
-                          <Checkbox
+                          {/* <Checkbox
                             checked={action.isCompleted}
                             onChange={() => handleCheckboxChange(action.id)}
-                          />
+                          /> */}
                           <h3>{action.name}</h3>
                           <p>{action.description}</p>
                         </CardContent>
                       </Card>
                     ))}
                   </div>
-                  <div className={classes.progressBar}>
+                  {/* <div className={classes.progressBar}>
                     <div
                       className={classes.progressFill}
                       style={{ width: `${todo.progress}%` }}
@@ -241,7 +241,7 @@ const ToDoDetailPage: React.FC = () => {
                   </div>
                   <div className={classes.progressPercentage}>
                     <p>{todo.progress}%</p>
-                  </div>
+                  </div> */}
                 </>
               )
             )}

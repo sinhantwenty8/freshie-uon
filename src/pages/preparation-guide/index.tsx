@@ -149,7 +149,7 @@ const PreparationGuide: React.FC = () => {
         title2={header.title2}
         imageUrl={header.imageUrl}
       ></Header>
-      <div className={classes.progressSection}>
+      {/* <div className={classes.progressSection}>
         <h2 className={classes.sectionTitle}>In Progress</h2>
         <div className={classes.carousel}>
           <CarouselProvider
@@ -200,8 +200,11 @@ const PreparationGuide: React.FC = () => {
             </div>
           </CarouselProvider>
         </div>
-      </div>
-      <div className={classes.beforeWeek1Section}>
+      </div> */}
+      <div
+        className={classes.beforeWeek1Section}
+        style={{ marginTop: "330px" }}
+      >
         <h2 className={classes.sectionTitle} style={{ marginTop: "-18%" }}>
           What to do before Week 1
         </h2>
@@ -240,11 +243,7 @@ const PreparationGuide: React.FC = () => {
                 href={`./preparation-guide/${todo.id}`}
                 className={classes.link}
               >
-                <div
-                  className={classes.todoItem}
-                  key={index}
-                  className={classes.link}
-                >
+                <div className={classes.todoItem} key={index}>
                   <div
                     className={classes.todoContainer}
                     style={{ backgroundImage: `url(${todo.imageUrl})` }}
