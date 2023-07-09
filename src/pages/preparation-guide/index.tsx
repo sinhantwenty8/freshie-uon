@@ -47,7 +47,7 @@ const PreparationGuide: React.FC = () => {
   const blogTitle = "preparation-guide";
   const [sections, setSections] = useState<Section[]>([]);
   const [isLoading, setIsLoading] = useState(true);
-  const [isPublished, setIsPublished] = useState(false);
+  const [isPublished, setIsPublished] = useState(true);
   const [todos, setTodos] = useState<ToDo[]>([]);
 
   const getToDos = useCallback(async () => {
@@ -142,8 +142,15 @@ const PreparationGuide: React.FC = () => {
     );
   }
 
-  if (isPublished == false) {
-    return <h3>Page not found.</h3>;
+  if (isPublished == false && isLoading == false) {
+    return <h3 className={classes.loading}>Page not found.</h3>;
+  } else if (isLoading) {
+    return (
+      <div className={classes.loading}>
+        <CircularProgress /> {/* Display the spinner */}
+        <p>Loading...</p>
+      </div>
+    );
   }
 
   return (

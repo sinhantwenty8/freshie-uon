@@ -74,7 +74,7 @@ export default function Accommodation() {
           <AccommodationList preview={false} />
         </>
       ) : (
-        <p>Page not found</p>
+        <p className={classes.loading}>Page not found</p>
       )}
     </div>
   );

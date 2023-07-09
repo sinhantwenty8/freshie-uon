@@ -1,6 +1,6 @@
 .markdown {
-  color: #4A6289;
-  font-family: 'Source Sans Pro', sans-serif;
+  color: #4a6289;
+  font-family: "Source Sans Pro", sans-serif;
   font-size: 1.5vw;
   max-width: 80vw;
   width: 690px;
@@ -19,7 +19,7 @@
 }
 
 .markdown h1 {
-  color: #3D516F;
+  color: #3d516f;
   font-size: 2vw;
   margin-bottom: 1em;
   font-weight: 500;
@@ -32,7 +32,7 @@
 .markdown p {
   width: 74vw;
   margin-bottom: 1em;
-  color: #4A6289;
+  color: #4a6289;
   line-height: 1.7em;
 }
 
@@ -41,7 +41,7 @@
 }
 
 .markDownContainer {
-  background-color: #DDE4E5;
+  background-color: #dde4e5;
   padding: 0 5vw;
   min-height: 50vh;
 }
@@ -49,6 +49,17 @@
 .markDownLayer {
   background-color: white;
   padding: 5vw;
+}
+
+.loading {
+  height: max-content;
+  display: flex;
+  height: 100vh;
+  width: 100%;
+  justify-content: center;
+  align-items: center;
+  font-weight: 500;
+  background-color: white;
 }
 
 /* Media Query for Small Screens */
@@ -83,4 +94,3 @@
     padding: 2vw;
   }
 }
-

@@ -133,7 +133,7 @@ export default function GettingAroundSG() {
   }, []);
 
   if (isPublishedGlobally == false) {
-    return <h3>Page not found.</h3>;
+    return <h3 className={classes.loading}>Page not found.</h3>;
   }
 
   return (

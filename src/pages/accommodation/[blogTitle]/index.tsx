@@ -67,7 +67,7 @@ export default function Blog() {
   }, [getBlog]);
 
   if ((blogHeader.title == "" && title == "") || isPublished == false) {
-    return <p>Page not found</p>;
+    return <p className={classes.loading}>Page not found</p>;
   }
 
   return (
