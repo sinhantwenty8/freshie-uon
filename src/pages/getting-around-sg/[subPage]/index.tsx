@@ -85,10 +85,7 @@ export default function AboutSG() {
     }
   }, [blogTitle]);
 
-  if (
-    (header.title == "" && isLoading == false) ||
-    (isPublished == false && isLoading == false)
-  ) {
+  if ((header.title == "" && isLoading == false) || isPublished == false) {
     return <h3 className={classes.loading}>Page not found</h3>;
   }
 

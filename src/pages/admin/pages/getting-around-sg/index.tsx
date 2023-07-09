@@ -300,10 +300,6 @@ export default function GettingAroundSgPage() {
     </div>
   );
 
-  if ((blog.blogTitle == "" && title == "") || isPublishedGlobally == false) {
-    return <p>Page not found</p>;
-  }
-
   return (
     <div>
       {isLoading ? (
