@@ -202,6 +202,7 @@ export default function DetailPage() {
             title: bannerTitle,
             description: bannerDescription,
             imageUrl: imageUrl,
+            isPublishedGlobally: isPublishedGlobally,
           });
         }
         setModalMessage("Page successfully updated.");
@@ -211,6 +212,7 @@ export default function DetailPage() {
           description: bannerDescription,
           imageUrl,
           slug: slug,
+          isPublishedGlobally: isPublishedGlobally,
         });
         setModalMessage("Page successfully added.");
       }

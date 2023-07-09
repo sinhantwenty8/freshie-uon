@@ -135,6 +135,7 @@ export default function PreparationGuide() {
             title: bannerTitle,
             title2: bannerTitle2,
             imageUrl: imageUrl,
+            isPublishedGlobally: isPublishedGlobally,
           });
         }
         setModalMessage("Page successfully updated.");
@@ -144,6 +145,7 @@ export default function PreparationGuide() {
           title2: bannerTitle2,
           imageUrl,
           slug: slug,
+          isPublishedGlobally: isPublishedGlobally,
         });
         setModalMessage("Page successfully added.");
       }

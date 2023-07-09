@@ -142,6 +142,10 @@ const PreparationGuide: React.FC = () => {
     );
   }
 
+  if (isPublished == false) {
+    return <h3>Page not found.</h3>;
+  }
+
   return (
     <div className={classes.container}>
       <Header
