@@ -1,0 +1,30 @@
+.container{
+    background-color: antiquewhite;
+    background-image: url("../../../images/accommodation.jpg");
+    background-position: 0% 6%;
+    background-size: cover;
+    background-repeat: no-repeat;
+    position: relative;
+    padding: 100px;
+    padding-left: 150px;
+    z-index: 1;
+    height: 150px;
+    color: white;
+}
+
+.headerTitle{
+    margin-top: 40px;
+    font-weight: 440;
+}
+
+.headerDescription{
+    width: 380px;
+    margin-top: 25px;
+    line-height: 150%;
+    font-weight: 350;
+    word-spacing: 10%;
+}
+
+.gridContainer{
+    max-width: 80vw;
+}

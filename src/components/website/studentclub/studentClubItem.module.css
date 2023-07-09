@@ -1,0 +1,70 @@
+.studentClubContainer {
+  margin: auto;
+  position: relative;
+  background-color: #ecefed;
+  max-width: 550px;
+  margin-top: 70px;
+  padding: 100px;
+  padding-top: 0px;
+  padding-bottom: 50px;
+  box-shadow: 2px 2px 3px #888;
+  color: #565f76;
+  display: flex;
+}
+
+.title {
+  display: inline-flex;
+  position: absolute;
+  left: 380px;
+  width: 45%;
+  margin-top: 50px;
+  padding-bottom: 20px;
+  font-weight: 550;
+  font-size: 21px;
+}
+
+.contentContainer {
+  display: flex;
+  justify-content: space-between;
+}
+.image {
+  position: absolute;
+  margin: 0;
+  left: 0px;
+  width: 25%;
+  height: 100%;
+  width: 45%;
+  left: 0%;
+}
+
+.description {
+  display: inline-flex;
+  position: absolute;
+  left: 380px;
+  margin-top: 100px;
+  margin-right: 20px;
+  font-size: 18px;
+  width: 45%;
+  line-height: 150%;
+}
+
+.viewButton {
+  width: 100%;
+  left: 480px;
+  background-color: #1f304a;
+  height: 50px;
+  border: none;
+  color: #e3e2e1;
+  margin-top: 410px;
+  font-size: 18px;
+  padding: 20px;
+  box-shadow: 2px 2px 3px #888;
+  border-radius: 30px;
+  position: relative;
+}
+
+.viewButton:hover {
+  background-color: #e3e2e1;
+  color: #1f304a;
+  box-shadow: 2px 2px 3px #888;
+}

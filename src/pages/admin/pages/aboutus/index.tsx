@@ -1,10 +1,20 @@
 import Header from "@/components/admin/header";
 import classes from "./index.module.css";
 import { useRouter } from "next/router";
-import { TextField } from "@mui/material";
+import { CircularProgress, TextField } from "@mui/material";
 import SideBar from "@/components/admin/sideBar/sideBar";
 import { FunctionComponent, useCallback, useEffect, useState } from "react";
 import { initializeApp } from "firebase/app";
+import Grid from "@mui/material/Grid";
+import ReactMarkdown from "react-markdown";
+import Button from "@mui/material/Button";
+import { Send } from "@mui/icons-material";
+import dynamic from "next/dynamic";
+import "easymde/dist/easymde.min.css";
+import HeaderEdit from "@/components/admin/pagesContent/hearderEdit";
+import DetailedPageSection from "@/components/admin/aboutus/detailedPageSection";
+import { Modal } from "@mui/material";
+
 import {
   addDoc,
   collection,
@@ -18,13 +28,7 @@ import {
   deleteDoc,
   Timestamp,
 } from "firebase/firestore";
-import Grid from "@mui/material/Grid";
-import ReactMarkdown from "react-markdown";
-import Button from "@mui/material/Button";
-import { Send } from "@mui/icons-material";
-import dynamic from "next/dynamic";
-import "easymde/dist/easymde.min.css";
-import { Modal } from "@mui/material";
+
 import {
   getStorage,
   ref,
@@ -32,40 +36,26 @@ import {
   getDownloadURL,
   uploadBytes,
 } from "firebase/storage";
-import DetailedPageSection from "@/components/admin/getting-around-sg/detailedPageSection";
-import CompareSection from "@/components/admin/accommodation/compareSection";
-import HeaderEdit from "@/components/admin/getting-around-sg/hearderEdit";
-import { CircularProgress } from "@mui/material";
+import DetailedPageSecondSection from "@/components/admin/aboutus/detailedPageSecondSection";
+import DetailedPageThirdSection from "@/components/admin/aboutus/detailedPageThirdSection";
 
-interface Blog {
+interface Page {
   id: string;
-  blogTitle: string;
-  compareImageUrl: string;
+  pageTitle: string;
+  imageURL: string;
 }
 
-interface Header {
-  description1: string;
-  description2: string;
-  drawingUrl: string;
-  image1Url: string;
-  image2Url: string;
-  image3Url: string;
-  image4Url: string;
-  image5Url: string;
-  title: string;
-}
-
-export default function GettingAroundSgPage() {
+export default function AboutUsPage() {
   const router = useRouter();
   const currentUrl = router.asPath;
   const urlArray: string[] = currentUrl.split("/");
-  const [blog, setBlog] = useState<Blog>({
+  const [page, setPage] = useState<Page>({
     id: "",
-    blogTitle: "",
-    compareImageUrl: "",
+    pageTitle: "",
+    imageURL: "",
   });
-  let blogTitle = urlArray[3];
-  urlArray[urlArray.length - 1] = blogTitle;
+  let pageTitle = urlArray[3];
+  urlArray[urlArray.length - 1] = pageTitle;
   const [isLoading, setIsLoading] = useState(true);
   const [slug, setslug] = useState("");
   const [title, settitle] = useState("");
@@ -75,7 +65,7 @@ export default function GettingAroundSgPage() {
   });
   const timestamp = serverTimestamp();
   const [bannerTitle, setBannerTitle] = useState("");
-  const [bannerImageUrl, setBannerImageUrl] = useState("");
+  const [bannerImageURL, setBannerImageURL] = useState("");
   const [bannerDescription, setBannerDescription] = useState("");
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [modalMessage, setModalMessage] = useState("");
@@ -83,8 +73,7 @@ export default function GettingAroundSgPage() {
   const [createdAt, setCreatedAt] = useState(Timestamp.now);
   const [isPublishedGlobally, setisPublishedGlobally] = useState(false);
   const [isImageUploaded, setIsImageUploaded] = useState(false);
-  const [pageSectionTitle, setPageSectionTitle] = useState("");
-  const [videoUrl, setVideoUrl] = useState("");
+  const [url, setUrl] = useState("");
 
   const closeModal = () => {
     setIsModalOpen(false);
@@ -92,44 +81,31 @@ export default function GettingAroundSgPage() {
   };
 
   const fetchPage = useCallback(async () => {
-    const querySnapshot = await getDocs(
-      collection(getFirestore(), "getting-around-sg")
-    );
+    const querySnapshot = await getDocs(collection(getFirestore(), "aboutus"));
     querySnapshot.forEach((doc) => {
-      console.log(blogTitle, doc.id);
       let docSlug = doc.id;
-      setslug((slug) => blogTitle);
-      if (docSlug == blogTitle) {
-        settitle((title) => doc.data().cmsTitle);
-        setBlog({
+      setslug((slug) => pageTitle);
+      if (docSlug == pageTitle) {
+        settitle((title) => doc.data().title);
+        setPage({
           id: doc.id,
-          blogTitle: doc.data().title,
-          compareImageUrl: doc.data().compareImageUrl,
+          pageTitle: doc.data().title,
+          imageURL: doc.data().imageURL,
         });
         setisPublishedGlobally(doc.data().isPublishedGlobally);
         setPostedBy(doc.data().postedBy);
         setCreatedAt(doc.data().createdAt);
       }
     });
-    const docs = await getDocs(
-      collection(getFirestore(), `getting-around-header`)
-    );
+    const docs = await getDocs(collection(getFirestore(), "aboutus-header"));
     docs.forEach((doc) => {
-      if (doc.id == blogTitle) {
+      if (doc.id == pageTitle) {
         setBannerTitle(doc.data().title);
-        setBannerDescription(doc.data().description1);
-        setBannerImageUrl(doc.data().drawingUrl);
+        setBannerDescription(doc.data().description);
+        setBannerImageURL(doc.data().imageURL);
       }
     });
-
-    const docs2 = await getDocs(collection(getFirestore(), `getting-around`));
-    docs2.forEach((doc) => {
-      if (doc.id == blogTitle) {
-        setPageSectionTitle(doc.data().title);
-        setVideoUrl(doc.data().youtubeUrl);
-      }
-    });
-  }, [blogTitle]);
+  }, [pageTitle]);
 
   useEffect(() => {
     const timeOutId = setTimeout(async () => {
@@ -139,44 +115,52 @@ export default function GettingAroundSgPage() {
     return () => clearTimeout(timeOutId);
   }, [fetchPage]);
 
+  useEffect(() => {
+    const timeOutId = setTimeout(async () => {
+      setIsLoading(true);
+      getTitleAndUrl();
+      fetchPage().then(() => setIsLoading(false));
+    }, 100);
+    return () => clearTimeout(timeOutId);
+  }, [pageTitle]);
+
   const postPage = async () => {
-    const docRef = doc(getFirestore(), "getting-around-sg", slug);
-    const docCurRef = doc(getFirestore(), "getting-around-sg", blogTitle);
+    const docRef = doc(getFirestore(), "aboutus", slug);
+    const docCurRef = doc(getFirestore(), "aboutus", pageTitle);
+    const docSnap = await getDoc(docRef);
     const docCurSnap = await getDoc(docCurRef);
-    const docRef2 = doc(getFirestore(), "getting-around", blogTitle);
-    const docCur2Snap = await getDoc(docRef2);
+    console.log(slug == pageTitle);
     try {
       if (docCurSnap.exists()) {
-        await updateDoc(docRef, {
-          cmsTitle: title,
-          isPublishedGlobally: isPublishedGlobally,
-        });
-        setModalMessage("Page successfully updated.");
+        if (slug != pageTitle) {
+          await deleteDoc(docCurRef).then(() =>
+            setModalMessage("Page successfully deleted.")
+          );
+          await setDoc(docRef, {
+            title: title,
+            createdAt: timestamp,
+            postedBy: "Admin",
+            isPublishedGlobally: isPublishedGlobally,
+          }).then(() => {
+            router.replace(`/admin/pages/${slug}`);
+          });
+          setModalMessage("Page successfully updated.");
+        } else {
+          await updateDoc(docRef, {
+            title: title,
+            isPublishedGlobally: isPublishedGlobally,
+          });
+          setModalMessage("Page successfully updated.");
+        }
       } else {
         await setDoc(docRef, {
-          cmsTitle: title,
+          title: title,
           createdAt: timestamp,
           postedBy: "Admin",
         });
         setModalMessage("Page successfully added.");
       }
-      console.log(docCur2Snap);
-
-      if (docCur2Snap.exists()) {
-        await updateDoc(docRef2, {
-          title: pageSectionTitle,
-          youtubeUrl: videoUrl,
-        });
-        setModalMessage("Page successfully updated.");
-      } else {
-        await setDoc(docRef2, {
-          title: pageSectionTitle,
-          youtubeUrl: videoUrl,
-        });
-        console.log(pageSectionTitle);
-        setModalMessage("Page successfully added.");
-      }
-
+      await updateUrl();
       setIsModalOpen(true);
     } catch (error) {
       setModalMessage("An error occurred while saving the page.");
@@ -186,66 +170,46 @@ export default function GettingAroundSgPage() {
 
   const postHeader = async () => {
     const storage = getStorage();
-    const storageRef = ref(
-      storage,
-      `getting-around-sg/${blogTitle}-header-banner/`
-    );
+    const storageRef = ref(storage, `aboutus-header-banner/`);
 
     try {
       if (isImageUploaded) {
-        await uploadString(storageRef, bannerImageUrl, "data_url");
+        await uploadString(storageRef, bannerImageURL, "data_url");
       }
-      const imageUrl = isImageUploaded
+      const imageURL = isImageUploaded
         ? await getDownloadURL(storageRef)
-        : bannerImageUrl;
-      const docRef = doc(getFirestore(), `getting-around-header`, slug);
+        : bannerImageURL;
+      const docRef = doc(getFirestore(), "aboutus-header", slug);
       const docSnap = await getDoc(docRef);
-      const curDocRef = doc(getFirestore(), `getting-around-header`, blogTitle);
+      const curDocRef = doc(getFirestore(), "aboutus-header", pageTitle);
       const curDocSnap = await getDoc(curDocRef);
       if (curDocSnap.exists()) {
         // Delete the existing document if the slug is not the same
-        if (slug != blogTitle) {
+        if (slug != pageTitle) {
           await deleteDoc(curDocRef).then(() =>
             setModalMessage("Header successfully deleted.")
           );
           await setDoc(docRef, {
             title: bannerTitle,
             description: bannerDescription,
-            drawingUrl: imageUrl,
-            slug: slug,
+            imageURL,
+            slug: { slug },
           });
         } else {
-          if (blogTitle == "getting-around-sg") {
-            await updateDoc(docRef, {
-              title: bannerTitle,
-              description: bannerDescription,
-              drawingUrl: imageUrl,
-              slug: slug,
-            });
-          } else {
-            await updateDoc(docRef, {
-              title: bannerTitle,
-              description: bannerDescription,
-              imageUrl,
-              slug: slug,
-            });
-          }
+          await updateDoc(docRef, {
+            title: bannerTitle,
+            description: bannerDescription,
+            imageURL,
+            slug: { slug },
+          });
         }
         setModalMessage("Page successfully updated.");
       } else {
-        if (blogTitle == "getting-around-sg") {
-          await setDoc(docRef, {
-            title: bannerTitle,
-            description: bannerDescription,
-            drawingUrl: imageUrl,
-          });
-        } else {
-          await setDoc(docRef, {
-            title: bannerTitle,
-            description: bannerDescription,
-            imageUrl,
-          });
-        }
+        await setDoc(docRef, {
+          title: bannerTitle,
+          description: bannerDescription,
+          imageURL,
+        });
         setModalMessage("Page successfully added.");
       }
 
@@ -256,53 +220,41 @@ export default function GettingAroundSgPage() {
     }
   };
 
-  const postPagePreview = async () => {};
-
-  const postHeaderPreview = async () => {};
-
   const onTitleChange = (title: string) => {
     settitle(title);
+    setslug(title.replaceAll(" ", "-").toLowerCase());
+    seterrorstates({ ...errorstates, sameslug: false });
   };
 
-  const onPageSectionTitleChange = (title: string) => {
-    setPageSectionTitle(title);
+  const getTitleAndUrl = useCallback(async () => {
+    const querySnapshot = await getDocs(
+      collection(getFirestore(), "aboutus-page")
+    );
+    querySnapshot.forEach((doc) => {
+      const videoUrl = doc.data().videoUrl;
+      if (doc.id == "aboutus-testimonials" && videoUrl) {
+        const id = videoUrl.split("/")[3];
+        setUrl(doc.data().videoUrl);
+      }
+    });
+  }, []);
+
+  const updateUrl = useCallback(async () => {
+    console.log(url);
+
+    const docRef = doc(getFirestore(), "aboutus-page", "aboutus-testimonials");
+    const docSnap = await getDoc(docRef);
+
+    if (docSnap.exists()) {
+      await updateDoc(docRef, {
+        videoUrl: url,
+      });
+    }
+  }, [getTitleAndUrl, url]);
+
+  const onUrlChange = (url: string) => {
+    setUrl((prevUrl) => url);
   };
-
-  const onVideoUrlChange = (url: string) => {
-    setVideoUrl(url);
-  };
-
-  const returnSection = (
-    <div className={classes.upperSecContainer}>
-      <h3 className={classes.sectionTitle}>Page Section Title</h3>
-      <TextField
-        InputProps={{ className: classes.input }}
-        sx={{ width: "600px" }}
-        size="small"
-        id="title"
-        variant="outlined"
-        onChange={(e) => onPageSectionTitleChange(e.target.value)}
-        value={pageSectionTitle}
-      />
-      <h3 className={classes.sectionTitle}>Video Url</h3>
-      <TextField
-        InputProps={{ className: classes.input }}
-        style={{ marginBottom: "30px" }}
-        sx={{ width: "600px" }}
-        size="small"
-        id="videoUrl"
-        variant="outlined"
-        value={videoUrl}
-        onChange={(e) => onVideoUrlChange(e.target.value)}
-      />
-      <h3 className={classes.sectionTitle}>Sub Pages</h3>
-      <DetailedPageSection></DetailedPageSection>
-    </div>
-  );
-
-  if ((blog.blogTitle == "" && title == "") || isPublishedGlobally == false) {
-    return <p>Page not found</p>;
-  }
 
   return (
     <div>
@@ -311,11 +263,11 @@ export default function GettingAroundSgPage() {
           <CircularProgress /> {/* Display the spinner */}
           <p>Loading...</p>
         </div>
-      ) : blog.blogTitle === "" ? (
+      ) : page.pageTitle === "" ? (
         <p>Page not found</p>
       ) : (
         <div className={classes.container}>
-          <Header id={blog.id} blogTitle={blog.blogTitle} urlArray={urlArray} />
+          <Header id={page.id} category={page.pageTitle} urlArray={urlArray} />
           <div className={classes.flexContainer}>
             <div className={classes.bodyContainer}>
               <div className={classes.upperSecContainer}>
@@ -331,7 +283,6 @@ export default function GettingAroundSgPage() {
                 />
                 <h3 className={classes.sectionTitle}>Slug</h3>
                 <TextField
-                  disabled
                   InputProps={{ className: classes.input }}
                   sx={{ width: "600px" }}
                   size="small"
@@ -344,18 +295,48 @@ export default function GettingAroundSgPage() {
                   }}
                   helperText={errorstates.sameslug ? "Slug already exists" : ""}
                 />
+                <h3 className={classes.sectionTitle}>Youtube Url</h3>
+                <TextField
+                  InputProps={{ className: classes.input }}
+                  sx={{ width: "600px" }}
+                  size="small"
+                  id="youtubeUrl"
+                  variant="outlined"
+                  onChange={(e) => onUrlChange(e.target.value)}
+                  value={url}
+                />
                 <h3 className={classes.sectionTitle}>Header</h3>
               </div>
               <HeaderEdit
                 headerTitle={bannerTitle}
                 headerDescription={bannerDescription}
-                headerImageUrl={bannerImageUrl}
+                headerImageUrl={bannerImageURL}
                 setBannerTitle={setBannerTitle}
-                setBannerImageUrl={setBannerImageUrl}
+                setBannerImageUrl={setBannerImageURL}
                 setBannerDescription={setBannerDescription}
                 setIsImageUploaded={setIsImageUploaded}
               />
-              {returnSection}
+              <div className={classes.upperSecContainer}>
+                <h3 className={classes.sectionTitle}>
+                  What we do at Freshie UON
+                </h3>
+                <DetailedPageSection></DetailedPageSection>
+                <h3
+                  className={classes.sectionTitle}
+                  style={{ marginTop: "50px" }}
+                >
+                  Services
+                </h3>
+                <DetailedPageSecondSection></DetailedPageSecondSection>
+                <h3
+                  className={classes.sectionTitle}
+                  style={{ marginTop: "50px" }}
+                >
+                  Testimonials
+                </h3>
+                <DetailedPageThirdSection></DetailedPageThirdSection>
+              </div>
+              {/* Modal */}
               <Modal
                 open={isModalOpen}
                 onClose={closeModal}
@@ -368,16 +349,23 @@ export default function GettingAroundSgPage() {
                   </Button>
                 </div>
               </Modal>
+              {/* <Grid item xs={12} xl={6}>
+                <ReactMarkdown className={classes.markdown}>{'# ' + title + '  \n' + text}</ReactMarkdown>
+            </Grid> */}
             </div>
             <SideBar
               postPage={postPage}
-              postPagePreview={postPagePreview}
               postHeader={postHeader}
-              postHeaderPreview={postHeaderPreview}
               isPublished={isPublishedGlobally}
               postedBy={postedBy}
               postedDate={createdAt}
               setIsPublished={setisPublishedGlobally}
+              postPagePreview={function (): void {
+                throw new Error("Function not implemented.");
+              }}
+              postHeaderPreview={function (): void {
+                throw new Error("Function not implemented.");
+              }}
             ></SideBar>
           </div>
         </div>
