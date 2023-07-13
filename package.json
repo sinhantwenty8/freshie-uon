@@ -26,6 +26,7 @@
     "bootstrap": "^5.2.3",
     "date-fns": "^2.30.0",
     "dayjs": "^1.11.7",
+    "easymde": "^2.18.0",
     "fa": "^1.0.1",
     "firebase": "^9.21.0",
     "mdb-react-ui-kit": "^6.0.0",

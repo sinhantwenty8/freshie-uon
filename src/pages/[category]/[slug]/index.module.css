@@ -1,0 +1,33 @@
+@import url('https://fonts.googleapis.com/css2?family=Source+Sans+Pro&display=swap');
+
+.markdown {
+    color: #879497;
+    font-family: 'Source Sans Pro', sans-serif;
+    font-size: 20px;
+    padding: 20px;
+}
+
+.markdown h1 {
+    color: #A99191;
+    font-size: 50px;
+}
+
+.markdown strong {
+    color: #498999;
+}
+
+.name {
+    font-family: 'Source Sans Pro', sans-serif;
+    font-size: 30px;
+}
+
+.cohort {
+    color: #5F96A7;
+    font-size: 15px;
+}
+
+.time {
+    color: #A99191;
+    font-size: 15px;
+    padding-top: 10px;
+}

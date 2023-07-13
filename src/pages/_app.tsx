@@ -6,6 +6,7 @@ import { initializeApp } from "firebase/app";
 import { useRouter } from "next/router";
 import TopNavBarAdmin from "@/components/admin/navBar/topNavBar";
 import SideNavBar from "@/components/admin/navBar/sideNavBar";
+import AdminSidebar from "@/components/admin/navBar/adminsidebar";
 
 export default function App({ Component, pageProps }: AppProps) {
   const router = useRouter();
@@ -53,6 +54,7 @@ export default function App({ Component, pageProps }: AppProps) {
           <Component {...pageProps} />
         </div>
       </div>
+      // <AdminSidebar />
     );
   }
 
