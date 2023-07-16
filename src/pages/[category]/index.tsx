@@ -78,12 +78,10 @@ const IndexPage: FunctionComponent<indexPageProps> = () => {
     return (<div style={{ backgroundColor: '#D9E0E5' }}>
         {
             headerurl &&
-            <div style={{ position: 'relative', width: '100%', paddingTop: '30%' }}>
-                <Image
+            <div style={{ position: 'relative', width: '100%', height: '400px' }}>
+                <img style={{ objectFit: 'cover', width: '100%', height: '100%' }}
                     src={headerurl}
                     alt="Header Image"
-                    layout="fill"
-                    objectFit="cover"
                 />
                 <div style={{ position: 'absolute', top: '50%', left: '10%', color: 'white' }}>
                     <h1>{name}</h1>
@@ -102,7 +100,7 @@ const IndexPage: FunctionComponent<indexPageProps> = () => {
                         <Link href={`/${article.category}/${article.slug}`}>
                             <div style={{ backgroundColor: 'white', display: 'flex', flexDirection: 'column', justifyContent: 'space-between', height: 450, padding: '10px', borderRadius: '15px' }}>
                                 <div style={{ width: '100%', height: '80%', overflow: 'hidden', position: 'relative', borderRadius: '15px 15px 15px 15px' }}>
-                                    <Image src={article.imageurl} alt="Article Image" layout="fill" objectFit="cover"></Image>
+                                    <img src={article.imageurl} alt="Article Image" style={{ objectFit: 'cover', width: '100%', height: '100%' }}></img>
                                     {/* <Image src={filtered.length > 0 ? filtered[0].imageurl : '/placeholder.jpg'} alt="Article Image" layout="fill" objectFit="cover" /> */}
                                 </div>
                                 <div style={{ paddingTop: '10px', paddingBottom: '10px' }}>

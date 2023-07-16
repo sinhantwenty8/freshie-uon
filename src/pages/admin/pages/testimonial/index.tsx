@@ -69,7 +69,7 @@ const AddTestimonial: FunctionComponent<addTestimonialProps> = () => {
 
     return (<>
         <AdminSidebar />
-        <div style={{ paddingLeft: "240px" }}>
+        <div style={{ paddingLeft: "0px" }}>
             {/* Header */}
             <div style={{ backgroundColor: "#EDF6FF", padding: "50px" }}>
                 <h2 style={{ margin: 0, paddingBottom: "20px", color: "#6E94AF" }}>Testimonials</h2>

@@ -7,7 +7,6 @@ import AddIcon from '@mui/icons-material/Add';
 import { Article } from "@mui/icons-material";
 import Image from 'next/image';
 import { getStorage, ref, uploadBytes, getDownloadURL } from "firebase/storage";
-import image from "next/image";
 import { text } from "stream/consumers";
 import DriveFolderUploadIcon from '@mui/icons-material/DriveFolderUpload';
 import { styled } from '@mui/material/styles';
@@ -406,13 +405,11 @@ const Add: FunctionComponent = () => {
                                         {/* Image Section */}
                                         <div style={{ marginBottom: '20px', width: '250px', marginLeft: '108px' }}>
                                             <div style={{ position: "relative", width: "100%" }}>
-                                                <Image
+                                                <img style={{ objectFit: "cover" }}
                                                     src={imageurl}
                                                     alt="Header Image"
-                                                    layout="responsive"
-                                                    width={1}
-                                                    height={1}
-                                                    objectFit="cover"
+                                                    width={200}
+                                                    height={100}
                                                 />
                                             </div>
                                         </div>
@@ -465,7 +462,7 @@ const Add: FunctionComponent = () => {
                                                 <TableRow
                                                     key={article.slug}
                                                     onClick={() =>
-                                                        (window.location.href = `/${article.category}/${article.slug}/edit`)
+                                                        (window.location.href = `/admin/pages/${article.category}/${article.slug}`)
                                                     }
                                                     style={{ cursor: 'pointer' }}
                                                 >

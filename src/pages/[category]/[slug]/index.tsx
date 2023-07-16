@@ -9,6 +9,7 @@ import { title } from 'process';
 import ReactMarkdown from 'react-markdown';
 import styles from './index.module.css'
 import { Box } from '@mui/material';
+import storiesBg from '../../../images/storiesbg.png'
 
 interface PostData {
     title: string;
@@ -88,9 +89,9 @@ const PostPage: FunctionComponent<PostPageProps> = () => {
         {
             data.imageurl != "" ?
                 <Grid container spacing={2}>
-                    <Grid item lg={5} sx={{ display: { xs: 'none', lg: 'block' } }}>
+                    <Grid item lg={5} sx={{ display: { xs: 'none', lg: 'block' }, backgroundColor: '#FAFAFA' }}>
                         <div style={{ padding: 20 }}>
-                            <div style={{ backgroundImage: `url(/storiesbg.png)`, backgroundSize: 'contain', height: 800, backgroundRepeat: 'no-repeat', padding: 50 }}>
+                            <div style={{ backgroundImage: `url(${storiesBg.src})`, backgroundSize: 'contain', height: 800, backgroundRepeat: 'no-repeat', padding: 50 }}>
                                 <img src={data.imageurl} alt={data.name} width={400} height={400} style={{ objectFit: "cover", borderRadius: 30, marginLeft: 100 }} />
                                 <div style={{ backgroundColor: '#DEDBD7', marginLeft: 40, marginTop: -50, borderRadius: '30px', width: '80%', padding: 40 }}>
                                     <strong><div className={styles.name}>{data.name}</div></strong>

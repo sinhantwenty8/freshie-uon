@@ -1,3 +1,4 @@
+import { Height } from "@mui/icons-material";
 import { Grid, Card, CardContent } from "@mui/material";
 import { getDocs, collection, getFirestore } from "firebase/firestore";
 import { FunctionComponent, useEffect, useState } from "react";
@@ -39,14 +40,16 @@ const Testimonial: FunctionComponent<testimonialProps> = () => {
             padding: '2rem',
             paddingLeft: '4rem',
             paddingRight: '4rem',
-            paddingBottom: '4rem'
+            paddingBottom: '4rem',
+            height: '700px',
         }}>
             <div style={{
                 fontSize: '50px',
                 fontWeight: 'bold',
                 color: '#1F304A',
                 textAlign: 'center',
-                marginBottom: '3rem'
+                marginBottom: '3rem',
+                paddingTop: '30px',
             }}>
                 Testimonials
             </div>

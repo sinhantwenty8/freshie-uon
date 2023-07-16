@@ -43,18 +43,24 @@ export default function App({ Component, pageProps }: AppProps) {
 
   if (currentUrl.startsWith("/admin")) {
     return (
+      // <div className="container">
+      //   <div>
+      //     <SideNavBar open={isSideBarOpen} onClose={toggleSideBar}></SideNavBar>
+      //   </div>
+      //   <div className={`sideContainer${isSideBarOpen ? "" : " closed"}`}>
+      //     <div className="topNavBarContainer">
+      //       <TopNavBarAdmin onClose={toggleSideBar}></TopNavBarAdmin>
+      //     </div>
+      //     <Component {...pageProps} />
+      //   </div>
+      // </div>
       <div className="container">
-        <div>
-          <SideNavBar open={isSideBarOpen} onClose={toggleSideBar}></SideNavBar>
-        </div>
         <div className={`sideContainer${isSideBarOpen ? "" : " closed"}`}>
-          <div className="topNavBarContainer">
-            <TopNavBarAdmin onClose={toggleSideBar}></TopNavBarAdmin>
-          </div>
+          <AdminSidebar />
           <Component {...pageProps} />
         </div>
       </div>
-      // <AdminSidebar />
+
     );
   }
 

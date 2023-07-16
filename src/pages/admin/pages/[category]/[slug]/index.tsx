@@ -155,12 +155,12 @@ const Edit: FunctionComponent<editProps> = () => {
                             <Button style={{ margin: '0 0 10px 0', color: "#000000" }} variant="text" component="label" endIcon={<DriveFolderUploadIcon />}>Change header<input hidden accept="image/*" multiple type="file" onChange={(e) => { setheader(e.target.files![0]); setheaderurl(URL.createObjectURL(e.target.files![0])) }} />
                             </Button>
                             {/* Image */}
-                            <div style={{ position: "relative", width: "100%", paddingTop: "30%" }}>
-                                <Image
+                            <div style={{ position: "relative", width: "100%"}}>
+                                <img style={{objectFit: "cover"}}
                                     src={headerurl}
                                     alt="Header Image"
-                                    layout="fill"
-                                    objectFit="cover"
+                                    width={200}
+                                    height={100}
                                 />
                             </div>
                             <div style={{ margin: '0 0 10px 0' }}  >{header ?
@@ -174,12 +174,12 @@ const Edit: FunctionComponent<editProps> = () => {
                             <Button style={{ margin: '0 0 10px 0', color: "#000000" }} variant="text" component="label" endIcon={<DriveFolderUploadIcon />}>Change profile photo<input hidden accept="image/*" multiple type="file" onChange={(e) => { setimage(e.target.files![0]); setimageurl(URL.createObjectURL(e.target.files![0])) }} />
                             </Button>
                             {/* Image */}
-                            <div style={{ position: "relative", width: "100%", paddingTop: "30%" }}>
-                                <Image
+                            <div style={{ position: "relative", width: "100%"}}>
+                                <img style={{objectFit: "cover"}}
                                     src={data.imageurl}
                                     alt="Header Image"
-                                    layout="fill"
-                                    objectFit="cover"
+                                    width={200}
+                                    height={100}
                                 />
                             </div>
                             <div style={{ margin: '0 0 10px 0' }}  >{image ?

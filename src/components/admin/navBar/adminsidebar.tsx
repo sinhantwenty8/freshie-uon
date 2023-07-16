@@ -4,6 +4,7 @@ import MailIcon from '@mui/icons-material/Mail';
 import MuiAppBar, { AppBarProps as MuiAppBarProps } from '@mui/material/AppBar';
 import InboxIcon from '@mui/icons-material/MoveToInbox';
 import { getAuth, signOut } from "firebase/auth";
+import universityLogo from "@/images/universitylogo.png";
 
 interface AdminSidebarProps {
 
@@ -86,7 +87,7 @@ const AdminSidebar: FunctionComponent<AdminSidebarProps> = () => {
             <DrawerHeader style={{ backgroundColor: '#272B40' }}>
                 <div
                     style={{
-                        backgroundImage: `url(../../images/universitylogo.png)`,
+                        backgroundImage: `url(${universityLogo.src})`,
                         backgroundRepeat: 'no-repeat',
                         backgroundSize: 'cover',
                         backgroundPosition: 'center',
@@ -97,6 +98,7 @@ const AdminSidebar: FunctionComponent<AdminSidebarProps> = () => {
                     }}
                     onClick={handledialogopen}
                 ></div>
+                {/* <img src={universityLogo.src} alt="" /> */}
             </DrawerHeader>
             <Divider />
             <List>
