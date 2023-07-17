@@ -213,12 +213,12 @@ const Add: FunctionComponent = () => {
         open?: boolean;
     }>(({ theme, open }) => ({
         flexGrow: 1,
-        padding: theme.spacing(3),
+        // padding: theme.spacing(3),
         transition: theme.transitions.create('margin', {
             easing: theme.transitions.easing.sharp,
             duration: theme.transitions.duration.leavingScreen,
         }),
-        marginLeft: `-${drawerWidth}px`,
+        // marginLeft: `-${drawerWidth}px`,
         ...(open && {
             transition: theme.transitions.create('margin', {
                 easing: theme.transitions.easing.easeOut,
@@ -344,7 +344,7 @@ const Add: FunctionComponent = () => {
                         </Button>
                     </DialogActions>
                 </Dialog> */}
-                <AdminSidebar />
+                
 
                 <Main style={{ padding: "0px" }}>
                     {/* Header */}

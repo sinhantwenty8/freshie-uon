@@ -5,35 +5,55 @@ import MuiAppBar, { AppBarProps as MuiAppBarProps } from '@mui/material/AppBar';
 import InboxIcon from '@mui/icons-material/MoveToInbox';
 import { getAuth, signOut } from "firebase/auth";
 import universityLogo from "@/images/universitylogo.png";
-
+import React from "react";
+import Link from "next/link";
+import InfoIcon from '@mui/icons-material/Info';
+import ApartmentIcon from '@mui/icons-material/Apartment';
+import GroupsIcon from '@mui/icons-material/Groups';
+import ReviewsIcon from '@mui/icons-material/Reviews';
+import PublicIcon from '@mui/icons-material/Public';
+import AutoStoriesIcon from '@mui/icons-material/AutoStories';
+import ListAltIcon from '@mui/icons-material/ListAlt';
+import SchoolIcon from '@mui/icons-material/School';
 interface AdminSidebarProps {
 
 }
 
 const drawerWidth = 240;
-export const Main = styled('main', { shouldForwardProp: (prop) => prop !== 'open' })<{
-    open?: boolean;
-}>(({ theme, open }) => ({
-    flexGrow: 1,
-    padding: theme.spacing(3),
-    transition: theme.transitions.create('margin', {
-        easing: theme.transitions.easing.sharp,
-        duration: theme.transitions.duration.leavingScreen,
-    }),
-    marginLeft: `-${drawerWidth}px`,
-    ...(open && {
-        transition: theme.transitions.create('margin', {
-            easing: theme.transitions.easing.easeOut,
-            duration: theme.transitions.duration.enteringScreen,
-        }),
-        marginLeft: 0,
-    }),
-}));
+// export const Main = styled('main', { shouldForwardProp: (prop) => prop !== 'open' })<{
+//     open?: boolean;
+// }>(({ theme, open }) => ({
+//     flexGrow: 1,
+//     // padding: theme.spacing(3),
+//     transition: theme.transitions.create('margin', {
+//         easing: theme.transitions.easing.sharp,
+//         duration: theme.transitions.duration.leavingScreen,
+//     }),
+//     // marginLeft: `-${drawerWidth}px`,
+//     ...(open && {
+//         transition: theme.transitions.create('margin', {
+//             easing: theme.transitions.easing.easeOut,
+//             duration: theme.transitions.duration.enteringScreen,
+//         }),
+//         marginLeft: 0,
+//     }),
+// }));
 
 const AdminSidebar: FunctionComponent<AdminSidebarProps> = () => {
+
+    const listItems = [
+        { icon: <InfoIcon /> ,text: 'About Us', url: '/admin/pages/aboutus' }, 
+        { icon: <ApartmentIcon /> ,text: 'Accommodation', url: '/admin/pages/accommodation' },
+        { icon: <SchoolIcon /> ,text: 'Getting Around Campus', url: '/admin/pages/getting-around-campus' },
+        { icon: <PublicIcon /> ,text: 'Getting Around SG', url: '/admin/pages/getting-around-sg' },
+        { icon: <ListAltIcon /> ,text: 'Preparation Guide', url: '/admin/pages/preparation-guide' },
+        { icon: <AutoStoriesIcon /> ,text: 'Student Stories', url: '/admin/pages/stories' },
+        { icon: <GroupsIcon /> ,text: 'Student Club', url: '/admin/pages/studentclub' },
+        { icon: <ReviewsIcon /> ,text: 'Testimonials', url: '/admin/pages/testimonial' },
+    ];
+
     const [openDialog, setOpenDialog] = useState(false);
 
-    
     const theme = useTheme();
 
     const DrawerHeader = styled('div')(({ theme }) => ({
@@ -67,6 +87,13 @@ const AdminSidebar: FunctionComponent<AdminSidebarProps> = () => {
             // An error happened.
         });
     }
+
+    // const Link = React.forwardRef<HTMLAnchorElement, RouterLinkProps>(function Link(
+    //     itemProps,
+    //     ref,
+    // ) {
+    //     return <RouterLink ref={ref} {...itemProps} role={undefined} />;
+    // });
 
     return (<>
         <Drawer
@@ -102,31 +129,22 @@ const AdminSidebar: FunctionComponent<AdminSidebarProps> = () => {
             </DrawerHeader>
             <Divider />
             <List>
-                {['Inbox', 'Starred', 'Send email', 'Drafts'].map((text, index) => (
-                    <ListItem key={text} disablePadding>
-                        <ListItemButton>
-                            <ListItemIcon>
-                                {index % 2 === 0 ? <InboxIcon /> : <MailIcon />}
-                            </ListItemIcon>
-                            <ListItemText primary={text} />
-                        </ListItemButton>
-                    </ListItem>
-                ))}
-            </List>
-            <Divider />
-            <List>
-                {['All mail', 'Trash', 'Spam'].map((text, index) => (
-                    <ListItem key={text} disablePadding>
-                        <ListItemButton>
-                            <ListItemIcon>
-                                {index % 2 === 0 ? <InboxIcon /> : <MailIcon />}
-                            </ListItemIcon>
-                            <ListItemText primary={text} />
-                        </ListItemButton>
+                {listItems.map((item, index) => (
+                    <ListItem key={item.text} disablePadding >
+                        <Link style={{ textDecoration: 'none', color: 'white' }} href={item.url}>
+                            <ListItemButton>
+                                <ListItemIcon style={{ color: 'white' }}>
+                                    {/* {index % 2 === 0 ? <InboxIcon /> : <MailIcon />} */}
+                                    {item.icon}
+                                </ListItemIcon>
+                                <ListItemText primary={item.text} />
+                            </ListItemButton>
+                        </Link>
                     </ListItem>
                 ))}
             </List>
         </Drawer>
+
         <Dialog
             open={openDialog}
             onClose={handledialogclose}

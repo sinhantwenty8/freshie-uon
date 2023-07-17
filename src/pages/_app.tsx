@@ -54,11 +54,9 @@ export default function App({ Component, pageProps }: AppProps) {
       //     <Component {...pageProps} />
       //   </div>
       // </div>
-      <div className="container">
-        <div className={`sideContainer${isSideBarOpen ? "" : " closed"}`}>
-          <AdminSidebar />
-          <Component {...pageProps} />
-        </div>
+      <div className={`sideContainer${isSideBarOpen ? "" : " closed"}`}>
+        <AdminSidebar />
+        <Component {...pageProps} />
       </div>
 
     );
