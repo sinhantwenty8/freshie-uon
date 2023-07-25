@@ -1,0 +1,96 @@
+.markdown {
+  color: #4a6289;
+  font-family: "Source Sans Pro", sans-serif;
+  font-size: 1.5vw;
+  max-width: 80vw;
+  width: 690px;
+  margin-left: 2vw;
+  margin-bottom: 3vh;
+}
+
+.markdown img {
+  display: block;
+  margin-left: auto;
+  margin-right: auto;
+  margin-bottom: 2em;
+  margin-top: 2em;
+  width: 40vw;
+  max-width: 350px;
+}
+
+.markdown h1 {
+  color: #3d516f;
+  font-size: 2vw;
+  margin-bottom: 1em;
+  font-weight: 500;
+}
+
+.markdown strong {
+  color: #498999;
+}
+
+.markdown p {
+  width: 74vw;
+  margin-bottom: 1em;
+  color: #4a6289;
+  line-height: 1.7em;
+}
+
+.markdown li:last-child {
+  margin-bottom: 1em;
+}
+
+.markDownContainer {
+  background-color: #fffdf4;
+  padding: 5vw;
+  min-height: 50vh;
+}
+
+.markDownLayer {
+  background-color: white;
+  padding: 5vw;
+}
+
+.loading {
+  height: max-content;
+  display: flex;
+  height: 100vh;
+  width: 100%;
+  justify-content: center;
+  align-items: center;
+  font-weight: 500;
+  background-color: white;
+}
+
+/* Media Query for Small Screens */
+@media (max-width: 900px) {
+  .markdown {
+    font-size: 16px;
+    max-width: 100%;
+    width: 100%;
+    margin-left: 0;
+    margin-bottom: 2vh;
+  }
+
+  .markdown img {
+    width: 100%;
+    max-width: 300px;
+  }
+
+  .markdown h1 {
+    font-size: 24px;
+  }
+
+  .markdown p {
+    width: 100%;
+    line-height: 1.5em;
+  }
+
+  .markDownContainer {
+    padding: 0 2vw;
+  }
+
+  .markDownLayer {
+    padding: 2vw;
+  }
+}

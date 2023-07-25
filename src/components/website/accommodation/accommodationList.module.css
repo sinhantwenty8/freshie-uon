@@ -1,0 +1,12 @@
+.accommodationListContainer {
+  padding-bottom: 70px;
+}
+
+.noAccommodation {
+  height: 35vw;
+  display: flex;
+  justify-content: center;
+  font-weight: 450;
+  font-size: 20px;
+  margin-top: 100px;
+}

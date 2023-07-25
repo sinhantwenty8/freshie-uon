@@ -1,0 +1,111 @@
+@import url("https://fonts.cdnfonts.com/css/optima");
+
+/* Global styling to reset default margin and padding */
+
+.navbarcontainer {
+  height: 60px; /* Increase the height for better visibility */
+  background-color: rgba(255, 255, 255, 0.9); /* Light gray background color */
+  display: flex;
+  align-items: center;
+  justify-content: space-between; /* Adjust spacing between elements */
+  position: fixed; /* Stick the navbar to the top */
+  top: 0;
+  left: 0;
+  right: 0;
+  z-index: 2;
+  color: #1e3356;
+  font-weight: 500;
+  font-family: "Optima", sans-serif;
+  box-shadow: 0px 2px 5px rgba(0, 0, 0, 0.1); /* Add a subtle shadow */
+  padding: 0 20px; /* Add padding to the navbar */
+  width: 100%;
+}
+
+.title {
+  margin: 0;
+  font-size: 1.7vw;
+  font-weight: 300;
+  font-family: "Optima", sans-serif;
+}
+
+.titleSup {
+  font-family: "Optima", sans-serif;
+  color: #899ab4;
+  font-weight: 500;
+  font-size: 1vw;
+}
+
+.navbar {
+  display: flex;
+  align-items: center;
+}
+
+.link {
+  margin-left: 30px; /* Adjust the spacing between main links */
+  font-size: 1.1vw;
+  text-decoration: none;
+  color: #1e3356;
+  padding: 8px 10px; /* Add padding to the links */
+  border-radius: 4px; /* Add rounded corners to the links */
+  transition: background-color 0.3s ease; /* Smooth transition for the hover effect */
+}
+
+.link:hover {
+  background-color: #e9f1fd; /* Light blue background color on hover */
+}
+
+.container {
+  display: flex;
+}
+
+.linkContainer {
+  position: relative;
+}
+
+.subNav {
+  position: absolute;
+  top: 100%;
+  left: 0;
+  background-color: rgba(256, 256, 256, 0.7);
+  padding: 10px;
+  display: flex;
+  flex-direction: column;
+  z-index: 2;
+  box-shadow: 0px 2px 5px rgba(0, 0, 0, 0.1); /* Add a subtle shadow */
+  border-radius: 4px; /* Add rounded corners to the subNav */
+}
+
+.subLink {
+  font-size: 1.1vw;
+  text-decoration: none;
+  color: #1e3356;
+  padding: 6px 10px; /* Add padding to the subLinks */
+  border-radius: 4px; /* Add rounded corners to the subLinks */
+  transition: background-color 0.3s ease; /* Smooth transition for the hover effect */
+}
+
+.subLink:hover {
+  background-color: #e9f1fd; /* Light blue background color on hover */
+}
+
+/* Highlight the active link */
+.active .link {
+  background-color: #e9f1fd;
+}
+
+/* Media Query for Small Screens */
+@media (max-width: 700px) {
+  .title {
+    font-size: 2.5vw; /* Increase font size for better visibility */
+  }
+
+  .link {
+    font-size: 2vw; /* Increase font size for better visibility */
+    margin-left: 15px; /* Adjust spacing between main links for small screens */
+  }
+
+  .navbar {
+    margin-left: 2vw;
+    margin-right: 2vw;
+  }
+}

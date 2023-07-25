@@ -1,0 +1,123 @@
+.container {
+  display: flex;
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: max-content;
+  height: 100%;
+  overflow: hidden;
+}
+
+.childrenContainer {
+  flex: 1; /* allow the children container to grow to fill available space */
+  background-color: white;
+  margin: 0;
+}
+
+.topContainer {
+  display: flex;
+  background-color: #272b40;
+  height: 18vh;
+  padding: 10px;
+  justify-content: center;
+  align-items: center;
+}
+.profileDiv {
+  margin: 10px;
+}
+
+.profileDesDiv {
+  margin-right: 16px;
+}
+
+.profileDesDiv p {
+  font-size: 12px;
+  color: white;
+  opacity: 0.7;
+}
+
+.MuiIcon-fontSizeLarge {
+  font-size: 100px;
+}
+
+.linksContainer {
+  display: block;
+  height: 100%;
+  width: 100%;
+}
+.linkContainer {
+  padding: 0;
+  height: max-content;
+}
+
+.linkContainer:hover {
+  color: #1b1a18;
+  background-color: #e7eaed;
+}
+
+.linkContainer:hover .link {
+  color: #1b1a18;
+}
+
+.link {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+  height: 100%;
+  text-decoration: none;
+  color: white;
+  font-size: 18px;
+  font-weight: 500;
+}
+
+.link p {
+  margin: 0;
+  padding: 20px;
+  padding-left: 30px;
+  width: 100%;
+  height: 100%;
+  display: flex;
+  align-items: flex-start;
+}
+
+.subLinkContainer {
+  margin: 0px;
+  padding: 0px;
+}
+
+.subLinkContainer:hover {
+  background-color: gainsboro;
+  color: #1b1a18;
+}
+
+.sublink {
+  display: flex;
+  width: 100%;
+  height: 100%;
+  text-decoration: none;
+  color: #a7c2de;
+  font-size: 16px;
+  font-weight: 500;
+}
+
+.sublink p {
+  margin: 0;
+  padding: 10px;
+  padding-left: 40px;
+  width: 100%;
+  height: 100%;
+  display: flex;
+  align-items: flex-start;
+}
+
+.sublink:hover p {
+  color: #1b1a18;
+}
+
+.navBarContainer {
+  width: 100%;
+  background-color: #1b1a18;
+  color: white;
+  height: 100vh;
+}

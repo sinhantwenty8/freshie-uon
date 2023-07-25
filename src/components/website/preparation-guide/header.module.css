@@ -1,0 +1,65 @@
+.container {
+  background-color: antiquewhite;
+  background-image: url("../../../images/accommodation.jpg");
+  background-position: 0% 6%;
+  background-size: cover;
+  background-repeat: no-repeat;
+  position: relative;
+  padding: 150px;
+  padding-bottom: 80px;
+  padding-left: 150px;
+  z-index: 1;
+  height: max-content;
+  color: white;
+}
+
+.headerContent {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-bottom: 20px;
+}
+
+.headerTitle {
+  margin-top: 40px;
+  font-weight: 600;
+  font-size: 50px; /* Updated font size */
+  width: 230px;
+  margin-right: 0;
+}
+
+.dialogueIcon {
+  display: flex;
+  align-items: center;
+  position: relative;
+}
+
+.dialogueRectangle {
+  width: 200px; /* Updated width */
+  height: 100px; /* Updated height */
+  background-color: #f0d8c5;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 30px;
+  margin-left: 20px;
+}
+
+.dialogueTriangle {
+  width: 0;
+  height: 0;
+  margin-left: 30px;
+  border-left: 30px solid transparent;
+  border-right: 30px solid transparent;
+  border-top: 40px solid #f0d8c5;
+  position: absolute;
+  top: 150px; /* Positioned below the rectangle */
+}
+
+.dialogueText {
+  text-align: center;
+  font-size: 50px; /* Updated font size */
+  font-weight: bold;
+  position: absolute;
+  color: #1e3356;
+}

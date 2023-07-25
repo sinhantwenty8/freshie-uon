@@ -1,0 +1,58 @@
+.markdown {
+  color: #879497;
+  font-family: "Source Sans Pro", sans-serif;
+  font-size: 20px;
+  max-width: 80vw;
+  width: 690px;
+  margin-left: 2vw;
+  margin-bottom: 30px;
+}
+
+.markdown h1 {
+  color: #a99191;
+  font-size: 50px;
+}
+
+.markdown strong {
+  color: #498999;
+}
+.name {
+  font-family: "Source Sans Pro", sans-serif;
+  font-size: 40px;
+}
+.cohort {
+  color: #5f96a7;
+  font-size: 20px;
+}
+
+.container {
+  background-color: #ebeef0;
+}
+
+.flexContainer {
+  display: flex;
+}
+
+.bodyContainer {
+  padding: 30px;
+}
+
+.upperSecContainer {
+  margin-left: 30px;
+}
+
+.input {
+  background-color: white;
+  margin-bottom: 10px;
+}
+
+.sectionTitle {
+  color: #6e94af;
+  margin: 20px 0px;
+  font-weight: 600;
+}
+
+.simpleMde {
+  width: 690px;
+  margin-left: 2vw;
+}

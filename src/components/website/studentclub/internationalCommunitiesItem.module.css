@@ -1,0 +1,78 @@
+.internationalCommunityContainer {
+  position: relative;
+  background-color: #ecefed;
+  width: 20%;
+  max-width: 220px;
+  min-width: 200px;
+  margin-right: 50px;
+  margin-bottom: 50px;
+  margin-left: 0px;
+  padding: 120px;
+  padding-top: 0px;
+  padding-bottom: 220px;
+  box-shadow: 2px 2px 3px #888;
+  color: #565f76;
+}
+
+.title {
+  display: inline-flex;
+  position: absolute;
+  left: 280px;
+  width: 30%;
+  margin-top: 30px;
+  padding-bottom: 0px;
+  font-weight: 550;
+  font-size: 21px;
+}
+
+.subtitle {
+  display: inline-flex;
+  position: absolute;
+  left: 280px;
+  width: 30%;
+  margin-top: 140px;
+  padding-bottom: 0px;
+  font-weight: 400;
+  font-size: 12px;
+}
+
+.contentContainer {
+  display: inline-flex;
+  justify-content: space-between;
+}
+
+.image {
+  position: absolute;
+  margin: 0;
+  left: 0px;
+  width: 50%;
+  height: 100%;
+  left: 0%;
+}
+
+.descriptionContainer {
+  position: absolute;
+  top: 0;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 100%;
+  height: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background-color: rgba(0, 0, 0, 0.8);
+  opacity: 0;
+  transition: opacity 0.3s ease-in-out;
+}
+
+.hovered .descriptionContainer {
+  opacity: 1;
+}
+
+.description {
+  width: 80%;
+  font-size: 12px;
+  text-align: center;
+  line-height: 1.5;
+  color: white;
+}
