@@ -6,6 +6,9 @@ import { initializeApp } from "firebase/app";
 import { useRouter } from "next/router";
 import TopNavBarAdmin from "@/components/admin/navBar/topNavBar";
 import SideNavBar from "@/components/admin/navBar/sideNavBar";
+import AdminSidebar from "@/components/admin/navBar/adminsidebar";
+import AdminFooter from "@/components/admin/adminFooter/adminFooter";
+import Footer from "@/components/website/footer/websiteFooter";
 
 export default function App({ Component, pageProps }: AppProps) {
   const router = useRouter();
@@ -42,16 +45,21 @@ export default function App({ Component, pageProps }: AppProps) {
 
   if (currentUrl.startsWith("/admin")) {
     return (
-      <div className="container">
-        <div>
-          <SideNavBar open={isSideBarOpen} onClose={toggleSideBar}></SideNavBar>
-        </div>
-        <div className={`sideContainer${isSideBarOpen ? "" : " closed"}`}>
-          <div className="topNavBarContainer">
-            <TopNavBarAdmin onClose={toggleSideBar}></TopNavBarAdmin>
-          </div>
-          <Component {...pageProps} />
-        </div>
+      // <div className="container">
+      //   <div>
+      //     <SideNavBar open={isSideBarOpen} onClose={toggleSideBar}></SideNavBar>
+      //   </div>
+      //   <div className={`sideContainer${isSideBarOpen ? "" : " closed"}`}>
+      //     <div className="topNavBarContainer">
+      //       <TopNavBarAdmin onClose={toggleSideBar}></TopNavBarAdmin>
+      //     </div>
+      //     <Component {...pageProps} />
+      //   </div>
+      // </div>
+      <div className={`sideContainer${isSideBarOpen ? "" : " closed"}`}>
+        <AdminSidebar />
+        <Component {...pageProps} />
+        <AdminFooter />
       </div>
     );
   }
@@ -61,6 +69,7 @@ export default function App({ Component, pageProps }: AppProps) {
       <TopNavBar>
         <Component {...pageProps} />
       </TopNavBar>
+      <Footer />
     </div>
   );
 }

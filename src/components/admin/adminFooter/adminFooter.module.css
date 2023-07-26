@@ -1,0 +1,59 @@
+.footerContainer {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  background-color: white;
+  padding: 20px;
+}
+
+.logoContainer {
+  flex: 1;
+  text-align: left;
+}
+
+.title {
+  font-size: 24px;
+  margin: 0;
+  margin-left: 3vw;
+  font-size: 20px;
+  font-family: Georgia, "Times New Roman", Times, serif;
+  color: #1f304a;
+  margin-top: 10px;
+}
+
+.logoContainer sup {
+  font-size: 14px;
+  font-weight: 500;
+}
+
+.copyright {
+  color: darkgrey;
+  margin-top: 10px;
+}
+
+.imageContainer {
+  flex: 1;
+  text-align: right;
+}
+
+.logo {
+  width: 100px;
+  height: 40px;
+  margin-top: 10px;
+}
+
+/* Media Queries */
+@media (max-width: 768px) {
+  .footerContainer {
+    flex-direction: column;
+  }
+
+  .logoContainer {
+    text-align: center;
+    margin-bottom: 10px;
+  }
+
+  .imageContainer {
+    text-align: center;
+  }
+}
