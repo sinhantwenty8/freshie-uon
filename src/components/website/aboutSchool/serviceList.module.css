@@ -1,0 +1,28 @@
+.serviceListContainer {
+  padding: 245px;
+  padding-top: 50px;
+  padding-bottom: 100px;
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  align-items: flex-start; /* Adjusted to align containers at the top */
+  background-color: #edded5;
+}
+
+.serviceListContainer > * {
+  flex-basis: calc(50% - 110px); /* Adjust the width as needed */
+  margin: 0; /* Adjusted to remove margin */
+  margin-top: 0; /* Added to remove top margin */
+  margin-bottom: 0;
+  margin-left: 0;
+  margin-right: 0; /* Added to remove bottom margin */
+}
+
+.noServiceItems {
+  height: 35vw;
+  display: flex;
+  justify-content: center;
+  font-weight: 450;
+  font-size: 20px;
+  margin-top: 0;
+}

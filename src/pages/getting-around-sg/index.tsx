@@ -1,4 +1,3 @@
-import Header from "../../components/website/getting-around-sg/header";
 import classes from "./index.module.css";
 import AccommodationCompareList from "@/components/website/accommodation/accommodationCompareList";
 import "firebase/firestore";
@@ -6,6 +5,7 @@ import { useCallback, useEffect, useState } from "react";
 import { getFirestore, collection, getDocs } from "firebase/firestore";
 import YouTube from "react-youtube";
 import Link from "next/link";
+import Header from "@/components/website/preparation-guide/header";
 
 interface Header {
   title: string;
@@ -60,7 +60,7 @@ export default function GettingAroundSG() {
       if (docSlug == blogTitle) {
         const gettingAroundHeader: Header = {
           title: doc.data().title,
-          description1: doc.data().description1,
+          description1: doc.data().description,
           description2: doc.data().description2,
           drawingUrl: doc.data().drawingUrl,
           image1Url: doc.data().image1Url,
@@ -119,6 +119,9 @@ export default function GettingAroundSG() {
       let docSlug = doc.id;
       if (docSlug == blogTitle) {
         setisPublishedGlobally(doc.data().isPublishedGlobally);
+        if (isPublishedGlobally == false) {
+          return <h3 className={classes.loading}>Page not found.</h3>;
+        }
       }
     });
   }, [title]);
@@ -132,14 +135,15 @@ export default function GettingAroundSG() {
     }, 100);
   }, []);
 
-  if (isPublishedGlobally == false) {
-    return <h3 className={classes.loading}>Page not found.</h3>;
-  }
-
   return (
     <div className={classes.all}>
       <div className={classes.header}>
         <Header
+          title={header.title}
+          title2={header.description1}
+          imageUrl={header.image1Url}
+        ></Header>
+        {/* <Header
           title={header.title}
           description1={header.description1}
           description2={header.description2}
@@ -149,7 +153,7 @@ export default function GettingAroundSG() {
           image3Url={header.image3Url}
           image4Url={header.image4Url}
           image5Url={header.image5Url}
-        ></Header>
+        ></Header> */}
       </div>
       <div className={classes.sectionsContainer}>
         <div className={classes.titleContainer}>

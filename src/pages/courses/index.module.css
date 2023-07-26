@@ -1,0 +1,36 @@
+.all {
+    background-color: #ebe6de;
+    padding-bottom: 50px;
+}
+
+.card {
+    height: 100%;
+    display: flex;
+    align-items: center;
+}
+
+.cards {
+    width: 80%;
+    margin: auto
+}
+
+.cardTitle {
+    height: 3.2em;
+    line-height: 1.2em;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    display: -webkit-box;
+    -webkit-line-clamp: 3;
+    -webkit-box-orient: vertical;
+
+}
+
+.link {
+    text-decoration: none;
+    display: flex;
+    justify-content: center;
+}
+
+.content {
+    color: brown;
+}

@@ -1,5 +1,5 @@
 import classes from "./index.module.css";
-import Header from "@/components/website/getting-around-campus/header";
+import Header from "@/components/website/preparation-guide/header";
 import "firebase/firestore";
 import { useCallback, useEffect, useState } from "react";
 import { getFirestore, collection, getDocs } from "firebase/firestore";
@@ -59,7 +59,7 @@ export default function GettingAroundSG() {
       if (docSlug == blogTitle) {
         const gettingAroundCampusHeader: Header = {
           title: doc.data().title,
-          description1: doc.data().description1,
+          description1: doc.data().description,
           description2: doc.data().description2,
           drawingUrl: doc.data().drawingUrl,
           image1Url: doc.data().image1Url,
@@ -140,14 +140,8 @@ export default function GettingAroundSG() {
       <div className={classes.header}>
         <Header
           title={header.title}
-          description1={header.description1}
-          description2={header.description2}
-          drawingUrl={header.drawingUrl}
-          image1Url={header.image1Url}
-          image2Url={header.image2Url}
-          image3Url={header.image3Url}
-          image4Url={header.image4Url}
-          image5Url={header.image5Url}
+          title2={header.description1}
+          imageUrl={header.image1Url}
         ></Header>
       </div>
       <div className={classes.sectionsContainer}>

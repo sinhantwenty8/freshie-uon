@@ -1,0 +1,64 @@
+.serviceContainer {
+  position: relative;
+  width: 100%;
+  height: 30%;
+  margin: 0 auto; /* Center horizontally */
+  color: white;
+  padding: 20px;
+}
+
+.title {
+  position: absolute;
+  top: 20%;
+  left: 20%;
+  transform: translate(-50%, -50%);
+  width: 80%;
+  text-align: center;
+  font-weight: 550;
+  font-size: 20px;
+  transition: all 0.3s ease-in-out;
+  opacity: 1; /* Initially visible */
+}
+
+.serviceContainer:hover .title {
+  opacity: 0; /* Hidden on hover */
+}
+
+.contentContainer {
+  position: relative;
+  width: 100%;
+  height: 100%;
+}
+
+.image {
+  width: 500px;
+  height: 200px;
+  object-fit: cover;
+  border-radius: 5px;
+}
+
+.descriptionContainer {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background-color: rgba(0, 0, 0, 0.8);
+  opacity: 0;
+  transition: opacity 0.3s ease-in-out;
+}
+
+.serviceContainer:hover .descriptionContainer {
+  opacity: 1;
+}
+
+.description {
+  width: 70%;
+  font-size: 12px;
+  text-align: center;
+  line-height: 1.5;
+  color: white;
+}

@@ -116,8 +116,8 @@ export default function GettingAroundCampusPage() {
     docs.forEach((doc) => {
       if (doc.id == blogTitle) {
         setBannerTitle(doc.data().title);
-        setBannerDescription(doc.data().description1);
-        setBannerImageUrl(doc.data().drawingUrl);
+        setBannerDescription(doc.data().description);
+        setBannerImageUrl(doc.data().image1Url);
       }
     });
 
@@ -216,7 +216,7 @@ export default function GettingAroundCampusPage() {
           await setDoc(docRef, {
             title: bannerTitle,
             description: bannerDescription,
-            drawingUrl: imageUrl,
+            image1url: imageUrl,
             slug: slug,
           });
         } else {
@@ -224,14 +224,14 @@ export default function GettingAroundCampusPage() {
             await updateDoc(docRef, {
               title: bannerTitle,
               description: bannerDescription,
-              drawingUrl: imageUrl,
+              image1url: imageUrl,
               slug: slug,
             });
           } else {
             await updateDoc(docRef, {
               title: bannerTitle,
               description: bannerDescription,
-              imageUrl,
+              image1url: imageUrl,
               slug: slug,
             });
           }
@@ -242,13 +242,13 @@ export default function GettingAroundCampusPage() {
           await setDoc(docRef, {
             title: bannerTitle,
             description: bannerDescription,
-            drawingUrl: imageUrl,
+            image1url: imageUrl,
           });
         } else {
           await setDoc(docRef, {
             title: bannerTitle,
             description: bannerDescription,
-            imageUrl,
+            image1url: imageUrl,
           });
         }
         setModalMessage("Page successfully added.");

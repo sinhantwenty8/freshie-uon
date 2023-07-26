@@ -1,0 +1,213 @@
+.all {
+  background-image: url("/src/images/accommodation.jpg");
+  background-color: aliceblue;
+  background-size: cover;
+  background-repeat: no-repeat;
+  height: 100%;
+  width: 100%;
+}
+
+.header {
+  margin-bottom: 30px;
+}
+
+.container {
+  background-color: #edded5;
+  padding: 50px;
+  margin-top: 0px;
+}
+
+.titleContainer {
+  margin-bottom: 30px;
+  padding-top: 50px;
+}
+
+.title {
+  font-weight: 600;
+  font-size: 30px;
+  color: #272b40;
+  width: 100%;
+  text-align: left;
+  margin-left: 140px;
+}
+
+.sectionContainer {
+  display: flex;
+  justify-content: center;
+  margin-top: 15px;
+  overflow-x: auto;
+  padding-bottom: 15px;
+}
+
+.sectionContainer::-webkit-scrollbar {
+  height: 8px;
+}
+
+.sectionContainer::-webkit-scrollbar-thumb {
+  background-color: #888;
+  border-radius: 4px;
+}
+
+.sectionContainer::-webkit-scrollbar-track {
+  background-color: transparent;
+}
+
+.sectionContainer > * {
+  flex-shrink: 0;
+}
+
+.section {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  padding: 50px;
+  width: 300px;
+  height: 350px;
+  cursor: pointer;
+  text-decoration: none;
+  background-color: #edded5;
+  margin-right: 0px;
+  position: relative;
+  background-color: #f9f7f8;
+  border-radius: 15px;
+}
+
+.section:last-child {
+  margin-right: 0;
+}
+
+.sectionTitle {
+  margin-top: 15px;
+  margin-bottom: 10px;
+  color: #272b40;
+  font-weight: bolder;
+  font-size: 20px;
+}
+
+.sectionDescription {
+  text-align: center !important;
+  margin-top: 10px;
+  width: 250px;
+  color: #272b40;
+}
+
+.sectionImgContainer {
+  position: relative;
+  width: 150px;
+  height: 150px;
+}
+
+.sectionCircle {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 150px;
+  height: 150px;
+  background-color: whitesmoke;
+  border-radius: 50%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.sectionImg {
+  width: 200px;
+  height: 200px;
+  object-fit: cover;
+  border-radius: 50%;
+  z-index: 1;
+  margin-bottom: 25px;
+}
+
+.lowerContainer {
+  display: flex;
+  align-items: flex-start;
+  width: 80%;
+  margin-left: 50px;
+  margin-right: 50px;
+  overflow-x: auto; /* Enable horizontal scrolling */
+  padding-bottom: 50px;
+}
+
+.testTitleContainer {
+  flex-basis: 100%;
+  margin-bottom: 20px;
+}
+
+.testTitle {
+  position: absolute;
+  margin-left: 150px;
+  width: 120px;
+  height: 650px;
+  background-color: #cbcfdb;
+}
+
+.testSectionContainer {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: right;
+  width: 60%;
+  margin-top: 50px;
+  margin-bottom: 20px; /* Add spacing at the bottom of each section container */
+  gap: 20px; /* Add spacing between section containers */
+}
+
+.testSection {
+  display: flex;
+  flex-direction: column;
+  margin-bottom: 10px;
+  padding: 35px;
+  border-radius: 10px;
+  background-color: rgba(
+    173,
+    216,
+    230,
+    0.8
+  ); /* Adjust the RGBA values and the opacity (0.8) as desired */
+  flex-basis: calc(70% 0px); /* Adjust the width for a two-column stack */
+}
+
+.testSectionContainer .testSection:nth-child(odd) {
+  margin-left: -250px;
+  margin-right: 250px;
+  background-color: #eae3e3;
+}
+
+.testSectionContainer .testSection:nth-child(even) {
+  background-color: #d6e1e3;
+}
+
+.testSectionDescription {
+  font-size: 14px;
+  margin-bottom: 20px;
+}
+
+.testSectionContent {
+  display: flex;
+  align-items: center;
+}
+
+.testSectionImg {
+  width: 40px;
+  height: 40px;
+  margin-right: 10px;
+  border-radius: 50%;
+}
+
+.testSectionTitle {
+  font-size: 14px;
+  margin: 0;
+  font-family: Georgia, "Times New Roman", Times, serif;
+}
+
+.sectionContainer {
+  flex-wrap: wrap;
+  justify-content: center;
+}
+
+.section {
+  margin-right: 50px;
+  margin-bottom: 50px;
+}

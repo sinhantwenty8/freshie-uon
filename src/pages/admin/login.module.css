@@ -1,0 +1,13 @@
+.welcome {
+    font-style: normal;
+    font-weight: 600;
+    font-size: 50px;
+    line-height: 59px;
+    text-align: center;
+    color: #1F304A;
+}
+
+.background {
+    background: rgb(207, 235, 245);
+    background: linear-gradient(180deg, rgba(207, 235, 245, 1) 35%, rgba(232, 231, 222, 1) 100%);
+}
